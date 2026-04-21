@@ -62,7 +62,7 @@ const dashboardUrl = computed(() =>
             >
                 <!-- large Hero with a Built By Arrow -->
                 <div
-                    class="flex flex-col items-start justify-center gap-6 bg-[#191400] px-6 py-8 text-white lg:flex-1 lg:px-12"
+                    class="flex flex-col items-start justify-center gap-6 px-6 py-8 text-white lg:flex-1 lg:px-12"
                 >
                     <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
                         Welcome to Built By Arrow
