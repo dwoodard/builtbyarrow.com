@@ -1,0 +1,93 @@
+/* ─────────────────────────────────────────────
+   Custom classes for patterns that don't fit
+   cleanly into Tailwind utility conventions.
+   ───────────────────────────────────────────── */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Animated gold underline for nav links */
+.gold-link {
+    position: relative;
+}
+
+.gold-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-amber-gold);
+    transition: width 0.3s ease;
+}
+
+.gold-link:hover::after {
+    width: 100%;
+}
+
+/* Hero section — background image with gradient overlay. */
+.hero-bg {
+    background-size: cover;
+    background-position: center 30%;
+
+    
+}
+
+/* Fade-up entrance animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-up {
+    animation: fadeUp 0.8s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+/* Section divider — gradient line through a brand color */
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-amber-gold), transparent);
+}
+
+/* Masonry photo grid — native CSS Grid masonry */
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: masonry;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .masonry-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Shared form field style used across input, select, and textarea */
+.form-input {
+    width: 100%;
+    border: 1px solid var(--color-gray-200);
+    background-color: var(--color-stone-50);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--color-stone-900);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-amber-gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-amber-gold) 15%, transparent);
+}
