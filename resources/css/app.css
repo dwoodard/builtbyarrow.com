@@ -17,6 +17,13 @@
     --color-tertiary: #f5f1ed;
     --color-tertiary-foreground: #34444c;
 
+    /* Welcome redesign palette */
+    --color-ink: #141414;
+    --color-bone: #F6F1EA;
+    --color-clay: #9B7A5E;
+    --color-charcoal: #242424;
+    --color-stone-soft: #E6DDD2;
+
     /* Brand fonts */
     --font-display: 'Playfair Display', serif;
     --font-body: 'DM Sans', sans-serif;
@@ -25,6 +32,9 @@
         Instrument Sans, ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --tracking-luxury: 0.22em;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -113,6 +123,7 @@
     --primary-foreground: hsl(0 0% 98%);
     --secondary: #b08968;
     --secondary-foreground: hsl(0 0% 100%);
+    --color-amber-gold: #b08968;
     --tertiary: #f5f1ed;
     --tertiary-foreground: #34444c;
     --muted: hsl(0 0% 96.1%);

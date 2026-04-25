@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import { gallery } from '@/routes';
 import BrandLogo from './BrandLogo.vue';
 
 const isLoggedIn = computed(() => !!usePage().props.auth?.user);
@@ -38,14 +37,12 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                 <!-- Desktop nav -->
                 <div class="hidden items-center gap-8 md:flex">
                     <a v-if="isLoggedIn" href="/admin" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Admin</a>
-                    <!-- <a href="/#services" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Services</a> -->
-                    <!-- <a href="/#portfolio" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Portfolio</a> -->
-                    <a href="/#about" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">About</a>
-                    <Link :href="gallery()" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Gallery</Link>
-                    <a href="/#contact"
+                    <a href="#work" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Work</a>
+                    <a href="#process" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Process</a>
+                    <a href="#contact"
                         class="ml-2 border border-amber-gold px-5 py-2 text-sm tracking-widest uppercase text-amber-gold transition-all duration-300 hover:bg-amber-gold hover:text-white"
                     >
-                        Contact Us
+                        Call
                    </a>
                 </div>
 
@@ -64,16 +61,14 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
 
             <!-- Mobile menu -->
             <div v-show="mobileOpen" class="border-t border-gray-700 bg-stone-950 py-4 md:hidden">
-                <a href="/#services" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Services</a>
-                <!-- <a href="/#portfolio" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Portfolio</a> -->
-                <a href="/#about" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">About</a>
-                <Link :href="gallery()" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Gallery</Link>
+                <a href="#work" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Work</a>
+                <a href="#process" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Process</a>
                 <a
-                    href="/#contact"
+                    href="#contact"
                     class="mx-4 mt-3 block border border-amber-gold py-2 text-center text-sm tracking-widest uppercase text-amber-gold"
                     @click="closeMobile"
                 >
-                    Contact Us
+                    Call
                 </a>
             </div>
         </div>
