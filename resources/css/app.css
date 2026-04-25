@@ -9,9 +9,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    /* Brand colors */
-    --color-amber-gold: #c8922a;
-    --color-amber-light: #dba94e;
+    /* Brand colors - Primary/Secondary System */
+    --color-primary: #34444c;
+    --color-primary-foreground: hsl(0 0% 98%);
+    --color-secondary: #b08968;
+    --color-secondary-foreground: hsl(0 0% 100%);
+    --color-tertiary: #f5f1ed;
+    --color-tertiary-foreground: #34444c;
 
     /* Brand fonts */
     --font-display: 'Playfair Display', serif;
@@ -105,10 +109,12 @@
     --card-foreground: hsl(0 0% 3.9%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(0 0% 3.9%);
-    --primary: hsl(0 0% 9%);
+    --primary: #34444c;
     --primary-foreground: hsl(0 0% 98%);
-    --secondary: hsl(0 0% 92.1%);
-    --secondary-foreground: hsl(0 0% 9%);
+    --secondary: #b08968;
+    --secondary-foreground: hsl(0 0% 100%);
+    --tertiary: #f5f1ed;
+    --tertiary-foreground: #34444c;
     --muted: hsl(0 0% 96.1%);
     --muted-foreground: hsl(0 0% 45.1%);
     --accent: hsl(0 0% 96.1%);

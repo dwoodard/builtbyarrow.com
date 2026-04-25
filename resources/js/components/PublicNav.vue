@@ -24,7 +24,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
 <template>
     <nav
         class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
-        :class="scrolled ? 'bg-stone-950 shadow-[0_2px_24px_rgba(0,0,0,0.4)]' : 'bg-transparent'"
+        :class="scrolled ? 'bg-stone-950 shadow-[0_2px_24px_rgba(0,0,0,0.2)]' : 'bg-transparent'"
     >
         <div class="mx-auto max-w-7xl px-6 lg:px-10">
             <div class="flex h-20 items-center justify-between">
@@ -32,13 +32,13 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                 <!-- Logo -->
                 <a href="/#" class="group flex items-center
                  gap-1">
-                    <BrandLogo size="md" />
+                    <BrandLogo size="sm" />
                 </a>
 
                 <!-- Desktop nav -->
                 <div class="hidden items-center gap-8 md:flex">
                     <a v-if="isLoggedIn" href="/admin" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Admin</a>
-                    <a href="/#services" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Services</a>
+                    <!-- <a href="/#services" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Services</a> -->
                     <!-- <a href="/#portfolio" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Portfolio</a> -->
                     <a href="/#about" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">About</a>
                     <Link :href="gallery()" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Gallery</Link>
