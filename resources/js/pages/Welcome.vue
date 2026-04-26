@@ -46,7 +46,7 @@ function openLightbox(index: number) {
                     </h1>
 
                     <p class="mt-8 max-w-xl text-lg font-light leading-8 text-ink/70">
-                        Built By Arrow creates refined residential spaces with disciplined budgets, trusted subcontractors, and a process designed for high-end homeowners who value clarity.
+                        Arrow Construction creates refined residential spaces with disciplined budgets, trusted subcontractors, and a process designed for high-end homeowners who value clarity.
                     </p>
 
                     <div class="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -75,53 +75,7 @@ function openLightbox(index: number) {
             </div>
         </section>
 
-        <!-- About -->
-        <section class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto max-w-5xl">
-                <div class="grid gap-16 md:gap-24 md:grid-cols-2 items-center">
-                    <!-- Image -->
-                    <div class="order-2 md:order-1">
-                        <div class="aspect-4/3 overflow-hidden bg-stone-soft">
-                            <img
-                                src="/imgs/owner.jpg"
-                                alt="Renny Cyr, Built By Arrow Construction"
-                                loading="lazy"
-                                class="h-full w-full object-cover"
-                            />
-                        </div>
-                    </div>
 
-                    <!-- Text -->
-                    <div class="order-1 md:order-2">
-                        <h2 class="font-serif text-5xl md:text-6xl font-light mb-8 text-ink">Renny Cyr</h2>
-
-                        <div class="space-y-6 text-base md:text-lg leading-relaxed text-ink/70">
-                            <p>
-                                Arrow Construction specializes in high-end residential work throughout the Park City and Deer Valley area. We focus on delivering quality, transparency, and attention to detail on every project.
-                            </p>
-                            <p>
-                                From initial consultation through final completion, we prioritize clear communication and professional craftsmanship. Our team handles everything with precision and care.
-                            </p>
-                        </div>
-
-                        <div class="mt-12 space-y-4">
-                            <div>
-                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Call</div>
-                                <a href="tel:+14355550123" class="text-lg text-ink hover:text-clay transition-colors font-light">
-                                    (435) 555-0123
-                                </a>
-                            </div>
-                            <div>
-                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Email</div>
-                                <a href="mailto:hello@builtbyarrow.com" class="text-lg text-ink hover:text-clay transition-colors font-light">
-                                    hello@builtbyarrow.com
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Social Proof Strip -->
         <section class="border-b border-black/10 px-5 py-16 sm:px-8 lg:px-10">
@@ -253,6 +207,56 @@ function openLightbox(index: number) {
                 </div>
             </div>
         </section>
+
+
+         <!-- About -->
+        <section class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+            <div class="mx-auto max-w-5xl">
+                <div class="grid gap-16 md:gap-24 md:grid-cols-2 items-center">
+                    <!-- Image -->
+                    <div class="order-2 md:order-1">
+                        <div class="aspect-4/3 overflow-hidden bg-stone-soft">
+                            <img
+                                src="/imgs/owner.jpg"
+                                alt="Renny Cyr, Built By Arrow Construction"
+                                loading="lazy"
+                                class="h-full w-full object-cover"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Text -->
+                    <div class="order-1 md:order-2">
+                        <h2 class="font-serif text-5xl md:text-6xl font-light mb-8 text-ink">Renny Cyr</h2>
+
+                        <div class="space-y-6 text-base md:text-lg leading-relaxed text-ink/70">
+                            <p>
+                                Arrow Construction specializes in high-end residential work throughout the Park City and Deer Valley area. We focus on delivering quality, transparency, and attention to detail on every project.
+                            </p>
+                            <p>
+                                From initial consultation through final completion, we prioritize clear communication and professional craftsmanship. Our team handles everything with precision and care.
+                            </p>
+                        </div>
+
+                        <div class="mt-12 space-y-4">
+                            <div>
+                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Call</div>
+                                <a href="tel:+14355550123" class="text-lg text-ink hover:text-clay transition-colors font-light">
+                                    (435) 555-0123
+                                </a>
+                            </div>
+                            <div>
+                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Email</div>
+                                <a href="mailto:hello@builtbyarrow.com" class="text-lg text-ink hover:text-clay transition-colors font-light">
+                                    hello@builtbyarrow.com
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Contact -->
         <section id="contact" class="bg-charcoal px-5 py-24 text-bone sm:px-8 lg:px-10 lg:py-32">
