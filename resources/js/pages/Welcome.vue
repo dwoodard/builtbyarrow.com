@@ -69,7 +69,7 @@ function openLightbox(index: number) {
                     </div>
                     <div class="mt-5 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-bone/70 lg:text-bone/70">
                         <span class="hidden lg:inline">{{ featuredPhotos[0]?.category_name ?? 'Residential Remodels' }}</span>
-                        <span class="text-ink/50 lg:text-bone/50">Built with restraint</span>
+                        <span class="text-ink/50 lg:text-bone/50">Arrow Construction</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ function openLightbox(index: number) {
 
                         <div class="space-y-6 text-base md:text-lg leading-relaxed text-ink/70">
                             <p>
-                                Built By Arrow Construction specializes in high-end residential work throughout the Park City and Deer Valley area. We focus on delivering quality, transparency, and attention to detail on every project.
+                                Arrow Construction specializes in high-end residential work throughout the Park City and Deer Valley area. We focus on delivering quality, transparency, and attention to detail on every project.
                             </p>
                             <p>
                                 From initial consultation through final completion, we prioritize clear communication and professional craftsmanship. Our team handles everything with precision and care.
