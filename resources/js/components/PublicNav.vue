@@ -29,8 +29,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
             <div class="flex h-20 items-center justify-between">
 
                 <!-- Logo -->
-                <a href="/#" class="group flex items-center
-                 gap-1">
+                <a href="/#" class="group flex items-center gap-1">
                     <BrandLogo size="sm" />
                 </a>
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// props size: 'sm' | 'md' | 'lg' = 'md'
 
 defineProps<{
     size?: 'sm' | 'md' | 'lg';
@@ -14,10 +13,9 @@ defineProps<{
                 size === 'sm' ? 'h-4 w-4' : '',
                 size === 'md' ? 'h-8 w-8' : '',
                 size === 'lg' ? 'h-12 w-12' : '',
-            ]
-            "
-            alt="Built By Arrow Logo"
-        src="/imgs/logo/arrow_white-1.png"  >
+            ]"
+            alt="Arrow Construction Logo"
+        src="/imgs/logo/arrow_white-1.png">
 
     </div>
 </template>
