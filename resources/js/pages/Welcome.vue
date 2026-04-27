@@ -34,69 +34,36 @@ function openLightbox(index: number) {
 
     <main id="top" class="bg-bone text-ink">
         <!-- Hero -->
-        <section class="relative min-h-screen overflow-hidden pt-20">
-            <div class="absolute inset-y-0 right-0 hidden w-1/2 bg-charcoal lg:block" />
-            <div class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-black/40 to-transparent" />
+        <section class="relative min-h-screen overflow-hidden bg-cover bg-center" style="background-image: url('/imgs/hero-bg.jpg')">
+            <div class="pointer-events-none absolute inset-0 bg-black/40" />
 
-            <div class="mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:px-10 lg:py-24">
-                <div class="relative z-10 max-w-2xl">
+            <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 py-20 sm:px-8 lg:px-10">
+                <div class="max-w-3xl text-center">
                     <p class="mb-8 text-xs font-semibold uppercase tracking-luxury text-clay">Park City · Deer Valley · Heber · Hideout</p>
 
-                    <h1 class="font-serif text-6xl font-medium leading-[0.92] tracking-[-0.04em] text-ink sm:text-7xl lg:text-8xl">
+                    <h1 class="font-serif text-5xl font-medium leading-[0.92] tracking-[-0.04em] text-bone sm:text-6xl lg:text-7xl">
                         A trusted path to your custom home
                     </h1>
 
-                    <p class="mt-8 max-w-xl text-lg font-light leading-8 text-ink/70">
+                    <p class="mt-8 mx-auto max-w-2xl text-lg font-light leading-8 text-bone/80">
                         Arrow Construction creates refined residential spaces with disciplined budgets, trusted subcontractors, and a process designed for high-end homeowners who value clarity.
                     </p>
 
-                    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-                        <a href="tel:+14355550123" class="inline-flex items-center justify-center bg-ink px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-bone transition hover:bg-clay">
+                    <div class="mt-10 flex flex-col gap-3 justify-center sm:flex-row">
+                        <a href="tel:+14355550123" class="inline-flex items-center justify-center bg-bone px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-ink transition hover:bg-clay">
                             Schedule a Call
                         </a>
-                        <a href="#work" class="inline-flex items-center justify-center border border-ink/20 px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-ink transition hover:border-ink">
+                        <a href="#work" class="inline-flex items-center justify-center border border-bone px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-bone transition hover:bg-bone hover:text-ink">
                             View Work
                         </a>
                     </div>
                 </div>
-
-                <div class="relative z-10 lg:pl-8">
-                    <div class="aspect-4/5 w-full overflow-hidden bg-stone-soft shadow-2xl shadow-black/20">
-                        <img
-                            src="/imgs/hero-bg.jpg"
-                            alt="Luxury mountain home interior by Built By Arrow Construction"
-                            class="h-full w-full object-cover grayscale-15"
-                        />
-                    </div>
-                    <div class="mt-5 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-bone/70 lg:text-bone/70">
-                        <span class="hidden lg:inline">{{ featuredPhotos[0]?.category_name ?? 'Residential Remodels' }}</span>
-                        <span class="text-ink/50 lg:text-bone/50">Arrow Construction</span>
-                    </div>
-                </div>
             </div>
         </section>
 
 
 
-        <!-- Social Proof Strip -->
-        <section class="border-b border-black/10 px-5 py-16 sm:px-8 lg:px-10">
-            <div class="mx-auto max-w-7xl">
-                <div class="grid gap-8 md:grid-cols-3">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Primary Work</p>
-                        <p class="mt-2 text-lg font-light leading-7 text-ink/70">Residential Construction</p>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Trusted By</p>
-                        <p class="mt-2 text-lg font-light leading-7 text-ink/70">40+ Families</p>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Approach</p>
-                        <p class="mt-2 text-lg font-light leading-7 text-ink/70">Quality Focused</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+
 
         <!-- Work / Portfolio -->
         <section v-if="featuredPhotos.length > 0" id="work" class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
@@ -104,7 +71,7 @@ function openLightbox(index: number) {
                 <div class="mb-16 flex items-end justify-between gap-8">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Our Work</p>
-                        <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Selected Projects</h2>
+                        <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Portfolio</h2>
                     </div>
                 </div>
 

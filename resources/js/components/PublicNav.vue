@@ -23,7 +23,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
 <template>
     <nav
         class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
-        :class="scrolled ? 'bg-stone-950 shadow-[0_2px_24px_rgba(0,0,0,0.2)]' : 'bg-stone-950'"
+        :class="scrolled ? 'bg-stone-950 shadow-[0_2px_24px_rgba(0,0,0,0.2)]' : 'bg-transparent'"
     >
         <div class="mx-auto max-w-7xl px-6 lg:px-10">
             <div class="flex h-20 items-center justify-between">
@@ -41,7 +41,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                     <a href="#contact"
                         class="ml-2 border border-amber-gold px-5 py-2 text-sm tracking-widest uppercase text-amber-gold transition-all duration-300 hover:bg-amber-gold hover:text-white"
                     >
-                        Call
+                        Call Us
                    </a>
                 </div>
 
@@ -67,7 +67,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                     class="mx-4 mt-3 block border border-amber-gold py-2 text-center text-sm tracking-widest uppercase text-amber-gold"
                     @click="closeMobile"
                 >
-                    Call
+                    Call Us
                 </a>
             </div>
         </div>
