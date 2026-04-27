@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['category_id', 'path', 'is_featured', 'sort_order'])]
 class Photo extends Model
@@ -22,6 +23,17 @@ class Photo extends Model
             'is_featured' => 'boolean',
             'sort_order' => 'integer',
         ];
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function (self $photo) {
+            if ($photo->path) {
+                Storage::disk(config('filesystems.media_disk'))->delete($photo->path);
+            }
+        });
     }
 
     public function category(): BelongsTo
