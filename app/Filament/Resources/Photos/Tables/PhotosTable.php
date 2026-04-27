@@ -36,8 +36,8 @@ class PhotosTable
                     ImageColumn::make('path')
                         ->label('')
                         ->disk(config('filesystems.media_disk'))
+                        ->height(300)
                         ->width('100%')
-                        ->extraAttributes(['class' => 'aspect-video overflow-hidden'])
                         ->extraImgAttributes(['class' => 'object-cover w-full h-full rounded-xl']),
                     Stack::make([
                         Split::make([
@@ -60,7 +60,7 @@ class PhotosTable
             ])
             ->contentGrid([
                 'md' => 2,
-                'xl' => 3,
+                'xl' => 2,
             ])
             ->filters([
                 SelectFilter::make('category')
