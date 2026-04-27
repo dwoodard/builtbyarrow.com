@@ -22,6 +22,7 @@ class PhotoForm
                     ->directory('photos')
                     ->disk(config('filesystems.media_disk'))
                     ->visibility('public')
+                    ->preserveFilenames()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn ($state): bool => filled($state))
                     ->columnSpanFull(),

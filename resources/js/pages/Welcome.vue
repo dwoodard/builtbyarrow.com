@@ -140,7 +140,7 @@ function openLightbox(index: number) {
             <div class="mx-auto max-w-7xl">
                 <div class="mb-16">
                     <p class="text-xs font-semibold uppercase tracking-luxury text-clay">How We Work</p>
-                    <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">A Disciplined Process</h2>
+                    <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Our Process</h2>
                 </div>
 
                 <div class="space-y-8 border-l border-black/10">
