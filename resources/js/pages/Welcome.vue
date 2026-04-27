@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { MasonryWall } from '@yeger/vue-masonry-wall';
 import PublicNav from '@/components/PublicNav.vue';
 import PublicFooter from '@/components/PublicFooter.vue';
 import ContactForm from '@/components/ContactForm.vue';
@@ -107,28 +108,41 @@ function openLightbox(index: number) {
                     </div>
                 </div>
 
-                <div class="grid gap-6 md:grid-cols-3">
-                    <article
-                        v-for="(photo, i) in featuredPhotos.slice(0, 3)"
-                        :key="photo.id"
-                        class="group cursor-pointer"
-                        :class="i === 1 ? 'md:mt-16' : ''"
-                        @click="openLightbox(i)"
-                    >
-                        <div class="aspect-4/5 overflow-hidden bg-stone-soft">
+                <MasonryWall
+                    :items="featuredPhotos"
+                    :min-columns="2"
+                    :max-columns="3"
+                    :column-width="[200, 300]"
+                    :gap="6"
+                >
+                    <template #default="{ item: photo, index }">
+                        <div
+                            class="group relative cursor-pointer overflow-hidden bg-stone-soft"
+                            @click="openLightbox(index)"
+                        >
                             <img
                                 :src="photo.url"
                                 :alt="photo.category_name ?? 'Project photo'"
-                                class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                                loading="lazy"
+                                class="h-auto w-full transition-transform duration-500 group-hover:scale-105"
                             />
-                        </div>
-                        <div class="mt-5 flex items-start justify-between gap-4">
-                            <div>
-                                <h3 class="text-lg font-medium">{{ photo.category_name ?? 'Featured Project' }}</h3>
+                            <div
+                                v-if="photo.category_name"
+                                class="absolute inset-x-0 bottom-0 bg-linear-to-t from-stone-950/70 to-transparent px-4 py-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            >
+                                <span class="text-xs uppercase tracking-widest text-clay">{{ photo.category_name }}</span>
                             </div>
-                            <span class="text-xs uppercase tracking-[0.2em] text-ink/40">{{ String(i + 1).padStart(2, '0') }}</span>
                         </div>
-                    </article>
+                    </template>
+                </MasonryWall>
+
+                <div class="mt-12 flex flex-col items-center justify-center">
+                    <a
+                        href="/gallery"
+                        class="border border-ink px-8 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-ink transition hover:bg-ink hover:text-bone"
+                    >
+                        Browse All Projects
+                    </a>
                 </div>
             </div>
         </section>
@@ -292,7 +306,7 @@ function openLightbox(index: number) {
         </section>
     </main>
 
-    <PublicFooter />
+
 
     <Lightbox v-model="lightboxOpen" :photos="featuredPhotos" :start-index="lightboxIndex" />
 </template>

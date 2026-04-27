@@ -22,7 +22,7 @@ class HomeController extends Controller
             ->get()
             ->map(fn (Photo $photo) => [
                 'id' => $photo->id,
-                'url' => $disk->url($photo->path),
+                'url' => str_starts_with($photo->path, 'http') ? $photo->path : $disk->url($photo->path),
                 'category_name' => $photo->category?->name,
             ]);
 

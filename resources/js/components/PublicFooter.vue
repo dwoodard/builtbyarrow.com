@@ -1,6 +1,3 @@
-<script setup lang="ts">
-</script>
-
 <template>
     <footer class="bg-charcoal px-6 py-7 text-bone/35">
         <div class="section-divider mb-8"></div>
