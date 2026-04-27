@@ -82,7 +82,6 @@ class BulkUploadPhotos extends Page
             return;
         }
 
-        $disk = config('filesystems.media_disk');
         $categoryId = $this->data['category_id'] ?? null;
         $tags = $this->data['tags'] ?? [];
         $isFeatured = $this->data['is_featured'] ?? false;
@@ -90,13 +89,12 @@ class BulkUploadPhotos extends Page
 
         $newCount = 0;
 
-        DB::transaction(function () use ($paths, $disk, $categoryId, $tags, $isFeatured, $sortOrder, &$newCount): void {
-            foreach ($paths as $file) {
-                if (! ($file instanceof TemporaryUploadedFile)) {
+        DB::transaction(function () use ($paths, $categoryId, $tags, $isFeatured, $sortOrder, &$newCount): void {
+            foreach ($paths as $path) {
+                // FileUpload returns already-stored file paths
+                if (empty($path)) {
                     continue;
                 }
-
-                $path = $file->store('photos', $disk);
 
                 $record = Photo::create([
                     'path' => $path,

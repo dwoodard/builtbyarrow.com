@@ -11,17 +11,26 @@
         <div class="space-y-6">
             {{ $this->form }}
 
-            @if (filled($this->data['paths'] ?? null))
-                <div class="flex justify-end">
-                    <button
-                        type="button"
-                        wire:click="submit"
-                        class="px-4 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition"
-                    >
-                        Save {{ count($this->data['paths'] ?? []) }} Photo{{ count($this->data['paths'] ?? []) !== 1 ? 's' : '' }}
-                    </button>
-                </div>
-            @endif
+            <div class="flex justify-end">
+                <button
+                    type="button"
+                    wire:click="submit"
+                    wire:loading.attr="disabled"
+                    :disabled="!@js(filled($this->data['paths'] ?? null))"
+                    class="px-4 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+                >
+                    <span wire:loading.remove>
+                        @php
+                            $count = count($this->data['paths'] ?? []);
+                            $label = $count > 0
+                                ? "Save {$count} Photo" . ($count !== 1 ? 's' : '')
+                                : 'Save Photos';
+                        @endphp
+                        {{ $label }}
+                    </span>
+                    <span wire:loading>Saving...</span>
+                </button>
+            </div>
         </div>
     </div>
 </x-filament-panels::page>
