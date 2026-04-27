@@ -38,7 +38,8 @@ class PhotosTable
                         ->disk(config('filesystems.media_disk'))
                         ->height(280)
                         ->width('100%')
-                        ->extraImgAttributes(['class' => 'object-contain w-full h-full rounded-xl']),
+                        ->extraAttributes(['class' => 'aspect-video'])
+                        ->extraImgAttributes(['class' => 'object-cover w-full h-full rounded-xl']),
                     Stack::make([
                         Split::make([
                             TextColumn::make('category.name')
