@@ -36,9 +36,9 @@ class PhotosTable
                     ImageColumn::make('path')
                         ->label('')
                         ->disk(config('filesystems.media_disk'))
-                        ->height(220)
+                        ->height(280)
                         ->width('100%')
-                        ->extraImgAttributes(['class' => 'object-cover w-full rounded-xl']),
+                        ->extraImgAttributes(['class' => 'object-cover w-full h-full rounded-xl']),
                     Stack::make([
                         Split::make([
                             TextColumn::make('category.name')
@@ -56,7 +56,7 @@ class PhotosTable
                             ->badge()
                             ->size(TextSize::ExtraSmall),
                     ])->space(1),
-                ])->space(2),
+                ])->space(0),
             ])
             ->contentGrid([
                 'md' => 2,

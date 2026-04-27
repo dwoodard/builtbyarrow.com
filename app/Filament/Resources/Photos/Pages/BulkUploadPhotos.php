@@ -45,10 +45,14 @@ class BulkUploadPhotos extends Page
                     ->image()
                     ->multiple()
                     ->maxFiles(200)
+                    ->maxParallelUploads(10)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->directory('photos')
                     ->disk(config('filesystems.media_disk'))
                     ->visibility('public')
+                    ->preserveFilenames()
+                    ->live()
+                    ->afterStateUpdated(fn (?array $state, $set) => $this->processUploads($state, $set))
                     ->columnSpanFull(),
                 Select::make('category_id')
                     ->label('Category')
@@ -72,50 +76,6 @@ class BulkUploadPhotos extends Page
             ])
             ->columns(2)
             ->statePath('data');
-    }
-
-    public function submit(): void
-    {
-        $paths = $this->data['paths'] ?? [];
-
-        if (empty($paths)) {
-            return;
-        }
-
-        $categoryId = $this->data['category_id'] ?? null;
-        $tags = $this->data['tags'] ?? [];
-        $isFeatured = $this->data['is_featured'] ?? false;
-        $sortOrder = $this->data['sort_order'] ?? 0;
-
-        $newCount = 0;
-
-        DB::transaction(function () use ($paths, $categoryId, $tags, $isFeatured, $sortOrder, &$newCount): void {
-            foreach ($paths as $path) {
-                // FileUpload returns already-stored file paths
-                if (empty($path)) {
-                    continue;
-                }
-
-                $record = Photo::create([
-                    'path' => $path,
-                    'category_id' => $categoryId,
-                    'is_featured' => $isFeatured,
-                    'sort_order' => $sortOrder,
-                ]);
-
-                if ($tags) {
-                    $record->tags()->sync($tags);
-                }
-
-                $newCount++;
-            }
-        });
-
-        if ($newCount > 0) {
-            $this->uploadedCount += $newCount;
-            $this->data['paths'] = [];
-            $this->dispatch('notify', title: "{$newCount} photo(s) uploaded successfully!");
-        }
     }
 
     protected function processUploads(?array $state, $set): void
