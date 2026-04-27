@@ -36,9 +36,8 @@ class PhotosTable
                     ImageColumn::make('path')
                         ->label('')
                         ->disk(config('filesystems.media_disk'))
-                        ->height(280)
                         ->width('100%')
-                        ->extraAttributes(['class' => 'aspect-video'])
+                        ->extraAttributes(['class' => 'aspect-video overflow-hidden'])
                         ->extraImgAttributes(['class' => 'object-cover w-full h-full rounded-xl']),
                     Stack::make([
                         Split::make([
