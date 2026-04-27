@@ -8,6 +8,20 @@
             </x-filament::section>
         @endif
 
-        {{ $this->form }}
+        <div class="space-y-6">
+            {{ $this->form }}
+
+            @if (filled($this->data['paths'] ?? null))
+                <div class="flex justify-end">
+                    <button
+                        type="button"
+                        wire:click="submit"
+                        class="px-4 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition"
+                    >
+                        Save {{ count($this->data['paths'] ?? []) }} Photo{{ count($this->data['paths'] ?? []) !== 1 ? 's' : '' }}
+                    </button>
+                </div>
+            @endif
+        </div>
     </div>
 </x-filament-panels::page>
