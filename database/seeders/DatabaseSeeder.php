@@ -15,9 +15,19 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // for local env only
+        if (app()->environment('local')) {
+            User::firstOrCreate(
+                ['email' => 'admin@admin.com'],
+                [
+                    'name' => 'Admin',
+                    'password' => bcrypt('asdfasdf'),
+                    'is_admin' => true,
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
+
+        $this->call(CategorySeeder::class);
     }
 }

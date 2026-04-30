@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrow Construction Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              urbane: '#54504A',
+              jogging: '#B8B2A5',
+              origami: '#E6E3DC',
+              iron: '#434341',
+              champagne: '#D8C9A8',
+              graphite: '#2D2D2A',
+            },
+            fontFamily: {
+              display: ['Cormorant Garamond', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            boxShadow: {
+              luxury: '0 30px 80px rgba(45,45,42,0.28)',
+              soft: '0 20px 60px rgba(67,67,65,0.16)',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      section {
+        scroll-margin-top: 6rem;
+      }
+
+      #services,
+      #projects,
+      #contact {
+        scroll-margin-top: 6rem;
+      }
+
+      @keyframes heroDrift {
+        from {
+          transform: scale(1.05) translate3d(-0.5%, -0.5%, 0);
+        }
+        to {
+          transform: scale(1.09) translate3d(0.75%, 0.75%, 0);
+        }
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-origami font-sans text-iron antialiased">
+    <main class="overflow-hidden">
+      <!-- Mobile-first luxury image header -->
+      <header class="relative min-h-[100svh] overflow-hidden bg-graphite px-4 py-4 text-origami sm:px-5 md:px-8 md:py-7">
+        <!-- Replace these URLs with your own work photos. Use a vertical crop for mobile and a landscape crop for desktop. -->
+        <picture>
+          <source media="(min-width: 768px)" srcset="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2400&q=90" />
+          <img
+            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1100&q=90"
+            alt="Arrow Construction project work"
+            class="absolute inset-0 h-full w-full scale-105 object-cover motion-safe:animate-[heroDrift_18s_ease-in-out_infinite_alternate]"
+          />
+        </picture>
+
+        <div class="absolute inset-0 bg-gradient-to-b from-graphite/85 via-graphite/60 to-graphite/90 md:bg-gradient-to-r md:from-graphite md:via-graphite/78 md:to-graphite/25"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(216,201,168,0.18),transparent_34%)] md:bg-[radial-gradient(circle_at_72%_28%,rgba(216,201,168,0.18),transparent_32%)]"></div>
+        <div class="pointer-events-none absolute inset-x-4 top-4 bottom-4 border border-champagne/18 sm:inset-x-5 sm:top-5 sm:bottom-5 md:inset-x-7 md:top-7 md:bottom-7"></div>
+        <canvas id="hero-three" class="pointer-events-none absolute inset-0 z-[1] h-full w-full opacity-45 mix-blend-screen"></canvas>
+
+        <nav class="relative z-10 mx-auto flex max-w-7xl items-center justify-between border border-champagne/20 bg-graphite/45 px-3 py-3 shadow-luxury backdrop-blur-xl sm:px-4 md:px-7 md:py-4">
+          <a href="#" class="flex min-w-0 items-center gap-3 sm:gap-4">
+            <span class="grid h-10 w-10 shrink-0 place-items-center border border-champagne/50 bg-origami/95 text-sm font-black tracking-[-0.04em] text-graphite shadow-soft sm:h-12 sm:w-12 sm:text-lg">AC</span>
+            <span class="min-w-0 leading-tight">
+              <span class="block font-display text-xl font-bold tracking-[0.04em] text-origami sm:text-2xl">Arrow</span>
+              <span class="block text-[0.55rem] font-bold uppercase tracking-[0.22em] text-champagne sm:text-[0.65rem] sm:tracking-[0.34em]">Construction</span>
+            </span>
+          </a>
+
+          <div class="hidden items-center gap-9 text-[0.72rem] font-bold uppercase tracking-[0.24em] text-origami/75 lg:flex">
+            <a class="transition hover:text-champagne" href="#services">Services</a>
+            <a class="transition hover:text-champagne" href="#projects">Portfolio</a>
+            <a class="transition hover:text-champagne" href="#contact">Contact</a>
+          </div>
+
+          <a href="#contact" class="hidden border border-champagne/55 bg-champagne px-5 py-3 text-[0.72rem] font-black uppercase tracking-[0.2em] text-graphite transition hover:bg-origami sm:inline-flex">
+            Consultation
+          </a>
+          <a href="#contact" class="inline-flex border border-champagne/55 bg-champagne px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-graphite transition hover:bg-origami sm:hidden">
+            Call
+          </a>
+        </nav>
+
+        <div class="relative z-10 mx-auto flex min-h-[calc(100svh-80px)] max-w-7xl items-end pb-9 pt-16 sm:min-h-[calc(100svh-88px)] sm:pb-12 md:min-h-[calc(100svh-104px)] md:py-24">
+          <div class="w-full">
+            <div class="max-w-5xl">
+              <p class="mb-4 inline-flex max-w-[18rem] border border-champagne/30 bg-origami/10 px-3 py-2 text-[0.6rem] font-black uppercase leading-5 tracking-[0.22em] text-champagne backdrop-blur-xl sm:max-w-none sm:px-5 sm:text-[0.7rem] sm:tracking-[0.32em]">
+                Refined residential and commercial construction
+              </p>
+
+              <h1 class="font-display text-[3.15rem] font-semibold leading-[0.86] tracking-[-0.055em] text-origami min-[390px]:text-[3.65rem] sm:text-7xl md:text-8xl lg:text-[8.5rem]">
+                Built with restraint. Finished with intention.
+              </h1>
+
+              <div class="mt-6 h-px max-w-xs bg-gradient-to-r from-champagne via-champagne/40 to-transparent sm:max-w-xl md:mt-8"></div>
+
+              <p class="mt-6 max-w-xl text-base leading-7 text-origami/78 sm:text-lg sm:leading-8 md:mt-8 md:text-xl">
+                Disciplined project management, elevated finish standards, and a quieter kind of confidence from first walkthrough to final detail.
+              </p>
+
+              <div class="mt-8 grid gap-3 sm:mt-10 sm:flex sm:flex-row md:mt-11">
+                <a href="#contact" class="bg-champagne px-5 py-4 text-center text-[0.68rem] font-black uppercase tracking-[0.2em] text-graphite shadow-luxury transition hover:bg-origami sm:px-8 sm:text-[0.75rem] sm:tracking-[0.24em]">
+                  Schedule Consultation
+                </a>
+                <a href="#projects" class="border border-origami/30 bg-origami/10 px-5 py-4 text-center text-[0.68rem] font-black uppercase tracking-[0.2em] text-origami backdrop-blur-xl transition hover:border-champagne hover:text-champagne sm:px-8 sm:text-[0.75rem] sm:tracking-[0.24em]">
+                  View Portfolio
+                </a>
+              </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 border border-champagne/20 bg-graphite/45 backdrop-blur-xl sm:mt-10 sm:max-w-xl md:hidden">
+              <div class="border-r border-champagne/20 p-4">
+                <p class="font-display text-3xl font-semibold text-origami">14</p>
+                <p class="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-champagne">Week Timeline</p>
+              </div>
+              <div class="p-4">
+                <p class="font-display text-3xl font-semibold text-origami">01</p>
+                <p class="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-champagne">Point of Contact</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Signature Standards -->
+      <section id="services" class="bg-origami px-4 py-16 sm:px-5 sm:py-20 md:px-8 md:py-32">
+        <div class="mx-auto max-w-7xl">
+          <div class="grid gap-7 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div>
+              <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">Signature Standards</p>
+              <h2 class="mt-4 font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] text-graphite min-[390px]:text-5xl md:mt-5 md:text-7xl">
+                A polished build process without the noise.
+              </h2>
+            </div>
+            <p class="max-w-2xl text-base leading-7 text-urbane sm:text-lg sm:leading-8 lg:ml-auto">
+              Warm architectural tones, soft neutral surfaces, champagne accents, and a process designed to feel calm, precise, and premium.
+            </p>
+          </div>
+
+          <div class="mt-10 grid gap-px overflow-hidden border border-iron/10 bg-iron/10 shadow-soft md:mt-16 md:grid-cols-3">
+            <article class="bg-origami p-6 sm:p-8 md:p-10">
+              <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-urbane sm:text-[0.68rem] sm:tracking-[0.28em]">01 / Planning</span>
+              <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] text-graphite sm:text-4xl md:mt-12">Preconstruction</h3>
+              <p class="mt-4 leading-7 text-urbane md:mt-5">Budgets, schedules, specifications, and execution planning aligned before work begins.</p>
+            </article>
+
+            <article class="bg-jogging p-6 sm:p-8 md:p-10">
+              <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-iron/70 sm:text-[0.68rem] sm:tracking-[0.28em]">02 / Execution</span>
+              <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] text-graphite sm:text-4xl md:mt-12">General Contracting</h3>
+              <p class="mt-4 leading-7 text-iron/75 md:mt-5">Coordinated trades, clear communication, and field oversight with a premium client experience.</p>
+            </article>
+
+            <article class="bg-graphite p-6 text-origami sm:p-8 md:p-10">
+              <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">03 / Finish</span>
+              <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-12">Renovations</h3>
+              <p class="mt-4 leading-7 text-origami/68 md:mt-5">Transformations with careful detailing, material transitions, and finish protection.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio -->
+      <section id="projects" class="bg-graphite px-4 py-16 text-origami sm:px-5 sm:py-20 md:px-8 md:py-32">
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-9 grid gap-6 md:mb-12 md:grid-cols-[1fr_auto] md:items-end">
+            <div>
+              <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-champagne sm:text-[0.72rem] sm:tracking-[0.32em]">Portfolio</p>
+              <h2 class="mt-4 font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] min-[390px]:text-5xl md:mt-5 md:text-7xl">Work that feels permanent.</h2>
+            </div>
+            <a href="#contact" class="w-fit border border-champagne/40 px-5 py-3 text-[0.68rem] font-black uppercase tracking-[0.2em] text-champagne transition hover:bg-champagne hover:text-graphite sm:px-6 sm:text-[0.72rem] sm:tracking-[0.24em]">
+              Discuss a Project
+            </a>
+          </div>
+
+          <div class="grid gap-5 md:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <article class="group relative min-h-[430px] overflow-hidden bg-iron shadow-luxury sm:min-h-[520px] lg:min-h-[560px]">
+              <img
+                src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1600&q=85"
+                alt="Luxury construction interior"
+                class="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/50 to-transparent"></div>
+              <div class="absolute inset-x-4 bottom-4 border border-champagne/25 bg-graphite/60 p-5 backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-7">
+                <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">Residential Renovation</p>
+                <h3 class="mt-3 font-display text-4xl font-semibold leading-none tracking-[-0.045em] sm:mt-4 sm:text-5xl">Whole Home Remodel</h3>
+              </div>
+            </article>
+
+            <div class="grid gap-5 md:gap-6">
+              <article class="border border-champagne/20 bg-urbane p-6 shadow-luxury sm:p-8 md:p-10">
+                <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">Commercial</p>
+                <h3 class="mt-12 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-16">Tenant Improvement</h3>
+                <p class="mt-4 leading-7 text-origami/70 md:mt-5">A refined process for client-facing spaces where timelines, trades, and finish quality all matter.</p>
+              </article>
+
+              <article class="border border-iron/10 bg-origami p-6 text-graphite shadow-luxury sm:p-8 md:p-10">
+                <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-urbane sm:text-[0.68rem] sm:tracking-[0.28em]">Custom Scope</p>
+                <h3 class="mt-12 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-16">Premium Build Management</h3>
+                <p class="mt-4 leading-7 text-urbane md:mt-5">One accountable partner coordinating the work, protecting the schedule, and managing the details.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="bg-origami px-4 py-16 sm:px-5 sm:py-20 md:px-8 md:py-32">
+        <div class="mx-auto max-w-7xl border border-iron/10 bg-jogging/45 p-6 shadow-soft sm:p-8 md:p-12 lg:p-16">
+          <div class="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-end">
+            <div>
+              <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">Arrow Construction</p>
+              <h2 class="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] text-graphite min-[390px]:text-5xl md:mt-5 md:text-7xl">
+                Bring a more considered build experience to your next project.
+              </h2>
+            </div>
+            <div class="lg:justify-self-end">
+              <p class="mb-7 max-w-md leading-7 text-urbane md:mb-8">
+                Use this section for a high-value lead form, phone number, or consultation scheduling link.
+              </p>
+              <a href="mailto:hello@example.com" class="inline-flex w-full justify-center bg-graphite px-6 py-4 text-[0.72rem] font-black uppercase tracking-[0.22em] text-origami shadow-luxury transition hover:bg-urbane sm:w-auto sm:px-8 sm:text-[0.75rem] sm:tracking-[0.24em]">
+                Request Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+      const canvas = document.querySelector('#hero-three');
+      const hero = canvas?.closest('header');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (canvas && hero && !reducedMotion) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+        camera.position.z = 7;
+
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: 'low-power',
+        });
+
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+        const isMobile = () => window.innerWidth < 768;
+        const particleCount = isMobile() ? 52 : 90;
+        const positions = new Float32Array(particleCount * 3);
+        const basePositions = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          const x = (Math.random() - 0.5) * 9;
+          const y = (Math.random() - 0.5) * 7;
+          const z = (Math.random() - 0.5) * 2;
+
+          positions[i3] = basePositions[i3] = x;
+          positions[i3 + 1] = basePositions[i3 + 1] = y;
+          positions[i3 + 2] = basePositions[i3 + 2] = z;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+          color: '#E6E3DC',
+          size: isMobile() ? 0.025 : 0.032,
+          transparent: true,
+          opacity: 0.62,
+          depthWrite: false,
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        const lineGeometry = new THREE.BufferGeometry();
+        const lineMaterial = new THREE.LineBasicMaterial({
+          color: '#D8C9A8',
+          transparent: true,
+          opacity: 0.5,
+          depthWrite: false,
+        });
+
+        // Generate random a full set of 6 numbers for each line segment
+        const randomLine = () => [
+          (Math.random() - 0.5) * 9,
+          (Math.random() - 0.5) * 7,
+          (Math.random() - 0.5) * 2,
+        ];
+
+        const linePositions = new Float32Array([
+          ...randomLine(),
+          ...randomLine(),
+          ...randomLine(),
+          ...randomLine(),
+        ]);
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+        const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+        scene.add(lines);
+
+        let width = 0;
+        let height = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const resize = () => {
+          const rect = hero.getBoundingClientRect();
+          width = rect.width;
+          height = rect.height;
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height, false);
+          material.size = isMobile() ? 0.025 : 0.032;
+        };
+
+        const onPointerMove = (event) => {
+          const rect = hero.getBoundingClientRect();
+          targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 0.35;
+          targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 0.35;
+        };
+
+        window.addEventListener('resize', resize, { passive: true });
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        resize();
+
+        const clock = new THREE.Clock();
+
+        const animate = () => {
+          const elapsed = clock.getElapsedTime();
+
+          pointerX += (targetX - pointerX) * 0.035;
+          pointerY += (targetY - pointerY) * 0.035;
+
+          for (let i = 0; i < particleCount; i++) {
+            const i3 = i * 3;
+            positions[i3] = basePositions[i3] + Math.sin(elapsed * 0.18 + i * 0.55) * 0.035;
+            positions[i3 + 1] = basePositions[i3 + 1] + Math.cos(elapsed * 0.16 + i * 0.4) * 0.035;
+          }
+
+          geometry.attributes.position.needsUpdate = true;
+          particles.rotation.y = elapsed * 0.018 + pointerX;
+          particles.rotation.x = pointerY * 0.5;
+          lines.rotation.y = elapsed * 0.012 + pointerX * 0.5;
+          lines.rotation.x = pointerY * 0.25;
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        };
+
+        animate();
+      } else if (canvas) {
+        canvas.remove();
+      }
+    </script>
+  </body>
+</html>

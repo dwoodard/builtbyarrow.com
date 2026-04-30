@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
+@import './custom.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,10 +9,32 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    /* Brand colors - Primary/Secondary System */
+    --color-primary: #34444c;
+    --color-primary-foreground: hsl(0 0% 98%);
+    --color-secondary: #b08968;
+    --color-secondary-foreground: hsl(0 0% 100%);
+    --color-tertiary: #f5f1ed;
+    --color-tertiary-foreground: #34444c;
+
+    /* Welcome redesign palette */
+    --color-ink: #141414;
+    --color-bone: #F6F1EA;
+    --color-clay: #9B7A5E;
+    --color-charcoal: #242424;
+    --color-stone-soft: #E6DDD2;
+
+    /* Brand fonts */
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+
     --font-sans:
         Instrument Sans, ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --tracking-luxury: 0.22em;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -96,10 +119,13 @@
     --card-foreground: hsl(0 0% 3.9%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(0 0% 3.9%);
-    --primary: hsl(0 0% 9%);
+    --primary: #34444c;
     --primary-foreground: hsl(0 0% 98%);
-    --secondary: hsl(0 0% 92.1%);
-    --secondary-foreground: hsl(0 0% 9%);
+    --secondary: #b08968;
+    --secondary-foreground: hsl(0 0% 100%);
+    --color-amber-gold: #b08968;
+    --tertiary: #f5f1ed;
+    --tertiary-foreground: #34444c;
     --muted: hsl(0 0% 96.1%);
     --muted-foreground: hsl(0 0% 45.1%);
     --accent: hsl(0 0% 96.1%);
