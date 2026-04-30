@@ -3,7 +3,6 @@ import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { MasonryWall } from '@yeger/vue-masonry-wall';
 import PublicNav from '@/components/PublicNav.vue';
-import PublicFooter from '@/components/PublicFooter.vue';
 import ContactForm from '@/components/ContactForm.vue';
 import Lightbox from '@/components/Lightbox.vue';
 
@@ -28,7 +27,7 @@ function openLightbox(index: number) {
 </script>
 
 <template>
-    <Head title="Built By Arrow Construction — Luxury Homes, Park City & Deer Valley" />
+    <Head title="Built By Arrow Construction — " />
 
     <PublicNav />
 
@@ -39,7 +38,7 @@ function openLightbox(index: number) {
 
             <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 py-20 sm:px-8 lg:px-10">
                 <div class="max-w-3xl text-center">
-                    <p class="mb-8 text-xs font-semibold uppercase tracking-luxury text-clay">Park City · Deer Valley · Heber · Hideout</p>
+                    <p class="mb-8 text-xs font-semibold uppercase tracking-luxury text-clay">East Bench · Deer Valley · Heber </p>
 
                     <h1 class="font-serif text-5xl font-medium leading-[0.92] tracking-[-0.04em] text-bone sm:text-6xl lg:text-7xl">
                         A trusted path to your custom home
@@ -263,7 +262,7 @@ function openLightbox(index: number) {
                         </div>
                         <div>
                             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-bone/50">Service Area</p>
-                            <p class="mt-3 text-lg font-light leading-relaxed">Park City, Deer Valley, Heber, Hideout, and surrounding areas.</p>
+                            <p class="mt-3 text-lg font-light leading-relaxed">Park City, Deer Valley, Heber, and surrounding areas.</p>
                         </div>
                     </div>
                 </div>
