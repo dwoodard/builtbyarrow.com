@@ -64,6 +64,18 @@ const times = ['Morning', 'Afternoon', 'Evening'] as const;
                     </div>
                 </div>
 
+                <div>
+                    <label class="mb-2 block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-urbane">Project Details <span class="text-urbane/60">(Optional)</span></label>
+                    <textarea
+                        name="details"
+                        placeholder="Tell us about your project..."
+                        rows="4"
+                        class="w-full border border-iron/20 bg-origami px-4 py-3 text-sm text-graphite placeholder:text-urbane/50 focus:border-champagne focus:outline-none"
+                        :class="{ 'border-red-400': errors.details }"
+                    />
+                    <p v-if="errors.details" class="mt-1 text-xs text-red-400">{{ errors.details }}</p>
+                </div>
+
                 <button
                     type="submit"
                     :disabled="processing"

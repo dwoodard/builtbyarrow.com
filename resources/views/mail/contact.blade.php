@@ -168,15 +168,14 @@
                     <div class="info-value">{{ ucfirst($data['best_time'] ?? 'Not specified') }}</div>
                 </div>
 
-                <div class="divider"></div>
+                @if(!empty($data['details']))
+                    <div class="info-block">
+                        <span class="info-label">Project Details</span>
+                        <div class="info-value" style="white-space: pre-wrap; word-wrap: break-word;">{{ $data['details'] }}</div>
+                    </div>
+                @endif
 
-                <!-- Next Steps -->
-                <div class="action-section">
-                    <p class="action-text">
-                        <strong>What's Next?</strong><br>
-                        We typically respond within 24 hours. A team member will call to discuss your project, timeline, and vision for your home.
-                    </p>
-                </div>
+                <div class="divider"></div>
             </div>
 
             <!-- Footer -->

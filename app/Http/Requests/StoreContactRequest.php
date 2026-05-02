@@ -19,6 +19,7 @@ class StoreContactRequest extends FormRequest
             'preferred_days' => ['nullable', 'array'],
             'preferred_days.*' => ['string', 'in:mon,tue,wed,thu,fri,sat,sun'],
             'best_time' => ['nullable', 'string', 'in:morning,afternoon,evening'],
+            'details' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }
