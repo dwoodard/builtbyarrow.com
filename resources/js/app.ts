@@ -8,10 +8,12 @@ import PublicLayout from '@/layouts/PublicLayout.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const publicPages: Array<'Welcome' | 'Gallery' | 'Contact'> = [
+const publicPages: Array<'Welcome' | 'Gallery' | 'Contact' | 'PrivacyPolicy' | 'TermsOfService'> = [
     'Welcome',
     'Gallery',
-    'Contact'
+    'Contact',
+    'PrivacyPolicy',
+    'TermsOfService'
 ];
 
 createInertiaApp({

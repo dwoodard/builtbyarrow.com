@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
 type FooterLink = {
     label: string;
     href: string;
 };
 
 const exploreLinks: FooterLink[] = [
-    { label: 'Services', href: '#services' },
-    { label: 'Portfolio', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Services', href: '/#services' },
+    { label: 'Portfolio', href: '/#projects' },
+    { label: 'Contact', href: '/#contact' },
 ];
 
 const legalLinks: FooterLink[] = [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms-of-service' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -39,7 +41,7 @@ const currentYear = new Date().getFullYear();
                     <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne">Explore</p>
                     <ul class="mt-6 space-y-3">
                         <li v-for="link in exploreLinks" :key="link.href">
-                            <a :href="link.href" class="text-sm text-origami/60 transition hover:text-champagne">{{ link.label }}</a>
+                            <Link :href="link.href" class="text-sm text-origami/60 transition hover:text-champagne">{{ link.label }}</Link>
                         </li>
                     </ul>
                 </div>
@@ -58,14 +60,14 @@ const currentYear = new Date().getFullYear();
             <div class="mt-16 flex flex-col items-center justify-between gap-6 border-t border-champagne/10 pt-8 md:flex-row">
                 <p class="text-[0.62rem] font-medium text-origami/40">&copy; {{ currentYear }} Arrow Construction. All rights reserved.</p>
                 <div class="flex gap-6">
-                    <a
+                    <Link
                         v-for="link in legalLinks"
                         :key="link.label"
                         :href="link.href"
                         class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-origami/40 transition hover:text-champagne"
                     >
                         {{ link.label }}
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

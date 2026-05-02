@@ -169,10 +169,10 @@ onMounted(() => {
 
             <div class="absolute inset-0 bg-gradient-to-b from-graphite/85 via-graphite/60 to-graphite/90 md:bg-gradient-to-r md:from-graphite md:via-graphite/78 md:to-graphite/25" />
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(216,201,168,0.18),transparent_34%)] md:bg-[radial-gradient(circle_at_72%_28%,rgba(216,201,168,0.18),transparent_32%)]" />
-            <div class="pointer-events-none absolute inset-x-4 top-13.5 bottom-4 border border-champagne/18 sm:inset-x-5 sm:bottom-5 md:inset-x-7 md:top-7 md:bottom-7" />
+            <div class="pointer-events-none absolute inset-x-4 top-13.5 bottom-4 border border-champagne/40 sm:inset-x-5 sm:bottom-5 md:inset-x-7 md:top-7 md:bottom-7" />
             <canvas ref="heroCanvas" class="pointer-events-none absolute inset-0 z-[1] h-full w-full opacity-45 mix-blend-screen" />
 
-            <div class="relative z-10 mx-auto flex min-h-[calc(100svh-80px)] max-w-7xl items-end pb-9 pt-16 sm:min-h-[calc(100svh-88px)] sm:pb-12 md:min-h-[calc(100svh-104px)] md:py-24">
+            <div class="p-10 relative z-10 mx-auto flex min-h-[calc(100svh-80px)] max-w-7xl items-end pb-9 pt-16 sm:min-h-[calc(100svh-88px)] sm:pb-12 md:min-h-[calc(100svh-104px)] md:py-24">
                 <div class="w-full">
                     <div class="max-w-5xl">
                         <p class="mb-4 inline-flex max-w-[18rem] border border-champagne/30 bg-origami/10 px-3 py-2 text-[0.6rem] font-black uppercase leading-5 tracking-[0.22em] text-champagne backdrop-blur-xl sm:max-w-none sm:px-5 sm:text-[0.7rem] sm:tracking-[0.32em]">

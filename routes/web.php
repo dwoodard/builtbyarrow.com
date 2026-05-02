@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/gallery', GalleryController::class)->name('gallery');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::inertia('/privacy-policy', 'PrivacyPolicy')->name('privacy-policy');
+Route::inertia('/terms-of-service', 'TermsOfService')->name('terms-of-service');
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
