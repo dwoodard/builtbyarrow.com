@@ -25,7 +25,7 @@
     --color-stone-soft: #E6DDD2;
 
     /* Brand fonts */
-    --font-display: 'Playfair Display', serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'DM Sans', sans-serif;
 
     --font-sans:
@@ -35,6 +35,18 @@
 
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --tracking-luxury: 0.22em;
+
+    /* Arrow Construction redesign palette */
+    --color-urbane: #54504A;
+    --color-jogging: #B8B2A5;
+    --color-origami: #E6E3DC;
+    --color-iron: #434341;
+    --color-champagne: #D8C9A8;
+    --color-graphite: #2D2D2A;
+
+    /* Luxury shadow tokens */
+    --shadow-luxury: 0 30px 80px rgba(45, 45, 42, 0.28);
+    --shadow-soft: 0 20px 60px rgba(67, 67, 65, 0.16);
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);

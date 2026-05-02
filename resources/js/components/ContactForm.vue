@@ -2,107 +2,75 @@
 import { Form, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const props = defineProps<{ projectTypes: string[]; dark?: boolean }>();
-
 const flash = computed(() => (usePage().props.flash as { success?: string })?.success);
 
-const darkInputClasses = computed(() => {
-    if (!props.dark) return '';
-    return 'border-bone/15 bg-transparent text-bone placeholder:text-bone/30 focus:border-bone focus:ring-bone/20';
-});
-
-const darkLabelClasses = computed(() => {
-    if (!props.dark) return 'text-gray-500';
-    return 'text-bone/70';
-});
-
-const darkErrorClasses = computed(() => {
-    if (!props.dark) return 'text-red-500';
-    return 'text-red-300';
-});
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
+const times = ['Morning', 'Afternoon', 'Evening'] as const;
 </script>
 
 <template>
     <div>
-        <!-- Success state -->
-        <div v-if="flash" class="mb-8 border border-amber-gold/40 bg-amber-gold/10 px-6 py-5">
-            <div class="flex items-start gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-amber-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <p class="text-sm text-stone-800">{{ flash }}</p>
-            </div>
+        <div v-if="flash" class="mb-6 border border-champagne/40 bg-champagne/10 px-5 py-4">
+            <p class="text-sm text-graphite">{{ flash }}</p>
         </div>
 
-        <Form
-            action="/contact"
-            method="post"
-            reset-on-success
-            #default="{ errors, processing }"
-        >
-            <div :class="['p-10', dark ? 'bg-transparent' : 'bg-white shadow-sm']">
-                <div class="space-y-6">
-
-                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <div>
-                            <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">First Name</label>
-                            <input type="text" name="first_name" required placeholder="Jane" class="form-input" :class="[darkInputClasses, { 'border-red-400': errors.first_name }]" />
-                            <p v-if="errors.first_name" :class="['mt-1 text-xs', darkErrorClasses]">{{ errors.first_name }}</p>
-                        </div>
-                        <div>
-                            <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">Last Name</label>
-                            <input type="text" name="last_name" required placeholder="Smith" class="form-input" :class="[darkInputClasses, { 'border-red-400': errors.last_name }]" />
-                            <p v-if="errors.last_name" :class="['mt-1 text-xs', darkErrorClasses]">{{ errors.last_name }}</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <div>
-                            <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">Phone</label>
-                            <input type="tel" name="phone" required placeholder="208 555 1234" class="form-input" :class="[darkInputClasses, { 'border-red-400': errors.phone }]" />
-                            <p v-if="errors.phone" :class="['mt-1 text-xs', darkErrorClasses]">{{ errors.phone }}</p>
-                        </div>
-                        <div>
-                            <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">Email</label>
-                            <input type="email" name="email" required placeholder="me@example.com" class="form-input" :class="[darkInputClasses, { 'border-red-400': errors.email }]" />
-                            <p v-if="errors.email" :class="['mt-1 text-xs', darkErrorClasses]">{{ errors.email }}</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">Type of Project</label>
-                        <select name="project_type" required class="form-input" :class="[darkInputClasses, { 'border-red-400': errors.project_type }]">
-                            <option value="">Select a service...</option>
-                            <option v-for="type in projectTypes" :key="type" :value="type">{{ type }}</option>
-                        </select>
-                        <p v-if="errors.project_type" :class="['mt-1 text-xs', darkErrorClasses]">{{ errors.project_type }}</p>
-                    </div>
-
-                    <div>
-                        <label :class="['mb-2 block text-xs tracking-widest uppercase', darkLabelClasses]">Tell Us About Your Project</label>
-                        <textarea
-                            name="description"
-                            rows="5"
-                            placeholder="Describe what you're looking to renovate, your timeline, and any other details..."
-                            class="form-input resize-none"
-                            :class="darkInputClasses"
-                        ></textarea>
-                    </div>
-
-                    <button
-                        type="submit"
-                        :disabled="processing"
-                        :class="[
-                            'w-full py-4 text-sm tracking-widest uppercase transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60',
-                            dark ? 'bg-bone text-charcoal hover:bg-bone/90' : 'bg-stone-950 text-white hover:bg-amber-gold'
-                        ]"
-                    >
-                        {{ processing ? 'Sending...' : 'Send Message to Renny →' }}
-                    </button>
-
-                    <p :class="['text-center text-xs', dark ? 'text-bone/50' : 'text-gray-400']">We respect your privacy. Your information is never shared.</p>
-
+        <Form action="/contact" method="post" reset-on-success #default="{ errors, processing }">
+            <div class="grid gap-5">
+                <div>
+                    <label class="mb-2 block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-urbane">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Your name"
+                        class="w-full border border-iron/20 bg-origami px-4 py-3 text-sm text-graphite placeholder:text-urbane/50 focus:border-champagne focus:outline-none"
+                        :class="{ 'border-red-400': errors.name }"
+                    />
+                    <p v-if="errors.name" class="mt-1 text-xs text-red-400">{{ errors.name }}</p>
                 </div>
+
+                <div>
+                    <label class="mb-2 block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-urbane">Phone Number</label>
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="(555) 000-0000"
+                        class="w-full border border-iron/20 bg-origami px-4 py-3 text-sm text-graphite placeholder:text-urbane/50 focus:border-champagne focus:outline-none"
+                        :class="{ 'border-red-400': errors.phone }"
+                    />
+                    <p v-if="errors.phone" class="mt-1 text-xs text-red-400">{{ errors.phone }}</p>
+                </div>
+
+                <div>
+                    <p class="mb-3 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-urbane">Preferred Days</p>
+                    <div class="flex flex-wrap gap-2">
+                        <label v-for="day in days" :key="day" class="cursor-pointer">
+                            <input type="checkbox" name="preferred_days[]" :value="day.toLowerCase()" class="peer sr-only" />
+                            <span class="block border border-iron/20 px-3 py-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-urbane transition peer-checked:border-graphite peer-checked:bg-graphite peer-checked:text-origami">
+                                {{ day }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="mb-3 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-urbane">Best Time of Day</p>
+                    <div class="flex flex-wrap gap-2">
+                        <label v-for="time in times" :key="time" class="cursor-pointer">
+                            <input type="radio" name="best_time" :value="time.toLowerCase()" class="peer sr-only" />
+                            <span class="block border border-iron/20 px-3 py-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-urbane transition peer-checked:border-graphite peer-checked:bg-graphite peer-checked:text-origami">
+                                {{ time }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    :disabled="processing"
+                    class="mt-1 w-full bg-graphite px-6 py-4 text-[0.72rem] font-black uppercase tracking-[0.22em] text-origami shadow-luxury transition hover:bg-urbane disabled:cursor-not-allowed disabled:opacity-60 sm:text-[0.75rem] sm:tracking-[0.24em]"
+                >
+                    {{ processing ? 'Sending...' : 'Schedule a Call' }}
+                </button>
             </div>
         </Form>
     </div>

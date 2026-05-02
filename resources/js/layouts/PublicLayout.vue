@@ -4,7 +4,7 @@ import PublicNav from '@/components/PublicNav.vue';
 </script>
 
 <template>
-    <div class="font-body">
+    <div class="min-h-screen bg-origami font-sans text-iron antialiased">
         <PublicNav />
         <main>
             <slot />

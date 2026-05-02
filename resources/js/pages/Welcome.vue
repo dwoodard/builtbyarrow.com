@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { MasonryWall } from '@yeger/vue-masonry-wall';
-import PublicNav from '@/components/PublicNav.vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import * as THREE from 'three';
 import ContactForm from '@/components/ContactForm.vue';
-import Lightbox from '@/components/Lightbox.vue';
 
 interface FeaturedPhoto {
     id: number;
@@ -17,262 +15,390 @@ const props = defineProps<{
     featuredPhotos: FeaturedPhoto[];
 }>();
 
-const lightboxOpen = ref(false);
-const lightboxIndex = ref(0);
+const heroCanvas = ref<HTMLCanvasElement | null>(null);
+const heroHeader = ref<HTMLElement | null>(null);
 
-function openLightbox(index: number) {
-    lightboxIndex.value = index;
-    lightboxOpen.value = true;
-}
+onMounted(() => {
+    const canvas = heroCanvas.value;
+    const header = heroHeader.value;
+
+    if (!canvas || !header) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reducedMotion) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+        camera.position.z = 7;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+            powerPreference: 'low-power',
+        });
+
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+        const isMobile = () => window.innerWidth < 768;
+        const particleCount = isMobile() ? 52 : 90;
+        const positions = new Float32Array(particleCount * 3);
+        const basePositions = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount; i++) {
+            const i3 = i * 3;
+            const x = (Math.random() - 0.5) * 9;
+            const y = (Math.random() - 0.5) * 7;
+            const z = (Math.random() - 0.5) * 2;
+
+            positions[i3] = basePositions[i3] = x;
+            positions[i3 + 1] = basePositions[i3 + 1] = y;
+            positions[i3 + 2] = basePositions[i3 + 2] = z;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: '#E6E3DC',
+            size: 3,
+            transparent: true,
+            opacity: 1,
+            depthWrite: false,
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        const lineGeometry = new THREE.BufferGeometry();
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: '#D8C9A8',
+            transparent: true,
+            opacity: 0.5,
+            depthWrite: false,
+        });
+
+        const randomLine = () => [
+            (Math.random() - 0.5) * 9,
+            (Math.random() - 0.5) * 7,
+            (Math.random() - 0.5) * 2,
+        ];
+
+        const linePositions = new Float32Array([
+            ...randomLine(),
+            ...randomLine(),
+            ...randomLine(),
+        ]);
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+        const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+        scene.add(lines);
+
+        let width = 0;
+        let height = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const resize = () => {
+            const rect = header.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height, false);
+            material.size = isMobile() ? 0.025 : 0.032;
+        };
+
+        const onPointerMove = (event: PointerEvent) => {
+            const rect = header.getBoundingClientRect();
+            targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 0.35;
+            targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 0.35;
+        };
+
+        window.addEventListener('resize', resize, { passive: true });
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        resize();
+
+        const clock = new THREE.Clock();
+
+        const animate = () => {
+            const elapsed = clock.getElapsedTime();
+
+            pointerX += (targetX - pointerX) * 0.035;
+            pointerY += (targetY - pointerY) * 0.035;
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                positions[i3] = basePositions[i3] + Math.sin(elapsed * 0.18 + i * 0.55) * 0.035;
+                positions[i3 + 1] = basePositions[i3 + 1] + Math.cos(elapsed * 0.16 + i * 0.4) * 0.035;
+            }
+
+            geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y = elapsed * 0.018 + pointerX;
+            particles.rotation.x = pointerY * 0.5;
+            lines.rotation.y = elapsed * 0.012 + pointerX * 0.5;
+            lines.rotation.x = pointerY * 0.25;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        onUnmounted(() => {
+            window.removeEventListener('resize', resize);
+            window.removeEventListener('pointermove', onPointerMove);
+        });
+    } else if (canvas) {
+        canvas.remove();
+    }
+});
 </script>
 
 <template>
-    <Head title="Built By Arrow Construction — " />
+    <Head title="Built By Arrow Construction" />
 
-    <PublicNav />
-
-    <main id="top" class="bg-bone text-ink">
+    <main id="top" class="bg-origami text-iron">
         <!-- Hero -->
-        <section class="relative min-h-screen overflow-hidden bg-cover bg-center" style="background-image: url('/imgs/hero-bg.jpg')">
-            <div class="pointer-events-none absolute inset-0 bg-black/40" />
+        <header ref="heroHeader" class="relative overflow-hidden -mt-[82px] min-h-[100svh] bg-graphite px-4 py-4 text-origami sm:px-5 md:px-8 md:py-7">
+            <picture>
+                <source media="(min-width: 768px)" srcset="/imgs/hero-bg.jpg" />
+                <img src="/imgs/hero-bg.jpg" alt="Arrow Construction project work" class="absolute inset-0 h-full w-full scale-105 object-cover motion-safe:animate-[heroDrift_18s_ease-in-out_infinite_alternate]" />
+            </picture>
 
-            <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 py-20 sm:px-8 lg:px-10">
-                <div class="max-w-3xl text-center">
-                    <p class="mb-8 text-xs font-semibold uppercase tracking-luxury text-clay">East Bench · Deer Valley · Heber </p>
+            <div class="absolute inset-0 bg-gradient-to-b from-graphite/85 via-graphite/60 to-graphite/90 md:bg-gradient-to-r md:from-graphite md:via-graphite/78 md:to-graphite/25" />
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(216,201,168,0.18),transparent_34%)] md:bg-[radial-gradient(circle_at_72%_28%,rgba(216,201,168,0.18),transparent_32%)]" />
+            <div class="pointer-events-none absolute inset-x-4 top-13.5 bottom-4 border border-champagne/18 sm:inset-x-5 sm:bottom-5 md:inset-x-7 md:top-7 md:bottom-7" />
+            <canvas ref="heroCanvas" class="pointer-events-none absolute inset-0 z-[1] h-full w-full opacity-45 mix-blend-screen" />
 
-                    <h1 class="font-serif text-5xl font-medium leading-[0.92] tracking-[-0.04em] text-bone sm:text-6xl lg:text-7xl">
-                        A trusted path to your custom home
-                    </h1>
+            <div class="relative z-10 mx-auto flex min-h-[calc(100svh-80px)] max-w-7xl items-end pb-9 pt-16 sm:min-h-[calc(100svh-88px)] sm:pb-12 md:min-h-[calc(100svh-104px)] md:py-24">
+                <div class="w-full">
+                    <div class="max-w-5xl">
+                        <p class="mb-4 inline-flex max-w-[18rem] border border-champagne/30 bg-origami/10 px-3 py-2 text-[0.6rem] font-black uppercase leading-5 tracking-[0.22em] text-champagne backdrop-blur-xl sm:max-w-none sm:px-5 sm:text-[0.7rem] sm:tracking-[0.32em]">
+                            FINE HOMES & RENOVATIONS
+                        </p>
 
-                    <p class="mt-8 mx-auto max-w-2xl text-lg font-light leading-8 text-bone/80">
-                        Arrow Construction creates refined residential spaces with disciplined budgets, trusted subcontractors, and a process designed for high-end homeowners who value clarity.
-                    </p>
+                        <h1 class="font-display text-[3.15rem] font-semibold leading-[0.86] tracking-[-0.055em] text-origami min-[390px]:text-[3.65rem] sm:text-7xl md:text-8xl lg:text-[8.5rem]">
+                            Let's build something meaningful.
+                        </h1>
 
-                    <div class="mt-10 flex flex-col gap-3 justify-center sm:flex-row">
-                        <a href="tel:+14355550123" class="inline-flex items-center justify-center bg-bone px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-ink transition hover:bg-clay">
-                            Schedule a Call
-                        </a>
-                        <a href="#work" class="inline-flex items-center justify-center border border-bone px-7 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-bone transition hover:bg-bone hover:text-ink">
-                            View Work
-                        </a>
+                        <div class="mt-6 h-px max-w-xs bg-gradient-to-r from-champagne via-champagne/40 to-transparent sm:max-w-xl md:mt-8" />
+
+                        <p class="mt-6 max-w-xl text-base leading-7 text-origami/78 sm:text-lg sm:leading-8 md:mt-8 md:text-xl">
+                            From the initial walk through to the final detail, we deliver meticulous craftsmanship and steady expertise
+                        </p>
+
+                        <div class="mt-8 grid gap-3 sm:mt-10 sm:flex sm:flex-row md:mt-11">
+                            <a href="#contact" class="bg-champagne px-5 py-4 text-center text-[0.68rem] font-black uppercase tracking-[0.2em] text-graphite shadow-luxury transition hover:bg-origami sm:px-8 sm:text-[0.75rem] sm:tracking-[0.24em]">
+                                Schedule Consultation
+                            </a>
+                            <a href="#projects" class="border border-origami/30 bg-origami/10 px-5 py-4 text-center text-[0.68rem] font-black uppercase tracking-[0.2em] text-origami backdrop-blur-xl transition hover:border-champagne hover:text-champagne sm:px-8 sm:text-[0.75rem] sm:tracking-[0.24em]">
+                                View Portfolio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Services -->
+        <section id="services" class="bg-origami px-4 py-16 sm:px-5 sm:py-20 md:px-8 md:py-32">
+            <!-- Philosophy -->
+            <div class="mx-auto max-w-7xl">
+                <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">
+                    Our Philosophy
+                </p>
+
+                <p class="mt-6 max-w-3xl text-base leading-8 text-urbane sm:text-lg sm:leading-8 md:mt-8 md:text-xl">
+                    At Arrow, we do more than construct houses. We coordinate every design detail, craftsperson, and material so your home's transformation is seamless. Whether you're starting from the ground up or renovating, the Arrow team provides attentive, personal service throughout the process. Our goal is to be more than the team that built your home. We strive to be a trusted partner you can count on long after the project is complete.
+                </p>
+            </div>
+
+            <!-- How We Work -->
+            <div class="mx-auto mt-20 max-w-7xl md:mt-32">
+                <div class="grid gap-7 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+                    <div>
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">
+                            Our Process
+                        </p>
+                        <h2 class="mt-4 font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] text-graphite min-[390px]:text-5xl md:mt-5 md:text-7xl">
+                            How We Work
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="mt-10 grid gap-px overflow-hidden border border-iron/10 bg-iron/10 shadow-soft md:mt-16 md:grid-cols-4">
+                    <article class="bg-origami p-6 sm:p-8 md:p-10">
+                        <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-urbane sm:text-[0.68rem] sm:tracking-[0.28em]">01 / Discovery</span>
+                        <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] text-graphite sm:text-4xl md:mt-12">
+                            Understanding
+                        </h3>
+                        <p class="mt-4 leading-7 text-urbane md:mt-5">Understanding your vision, timeline, and budget constraints.</p>
+                    </article>
+
+                    <article class="bg-jogging p-6 sm:p-8 md:p-10">
+                        <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-urbane sm:text-[0.68rem] sm:tracking-[0.28em]">02 / Design & Planning</span>
+                        <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] text-graphite sm:text-4xl md:mt-12">
+                            Planning
+                        </h3>
+                        <p class="mt-4 leading-7 text-urbane md:mt-5">Detailed plans, clear expectations, and open communication every step.</p>
+                    </article>
+
+                    <article class="bg-iron p-6 text-origami sm:p-8 md:p-10">
+                        <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">03 / Construction</span>
+                        <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-12">
+                            Building
+                        </h3>
+                        <p class="mt-4 leading-7 text-origami/68 md:mt-5">Expert subcontractors, daily coordination, and quality assurance.</p>
+                    </article>
+
+                    <article class="bg-graphite p-6 text-origami sm:p-8 md:p-10">
+                        <span class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">04 / Completion</span>
+                        <h3 class="mt-10 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-12">
+                            Delivery
+                        </h3>
+                        <p class="mt-4 leading-7 text-origami/68 md:mt-5">Final walkthrough, documentation, and our commitment to your satisfaction.</p>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="mx-auto mt-20 max-w-7xl md:mt-32">
+                <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">
+                    Our Services
+                </p>
+
+                <div class="mt-16 grid gap-4 overflow-hidden border border-iron/10 bg-iron/10 p-4 shadow-soft md:mt-20 md:grid-cols-3">
+                    <div class="bg-origami/50 p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Custom Home Construction</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">From foundation to final detail, we build homes designed for your life.</p>
+                    </div>
+
+                    <div class="bg-origami p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Residential Renovations</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">Kitchen, bath, and whole-home remodels with meticulous attention to detail.</p>
+                    </div>
+
+                    <div class="bg-origami p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Design Consultation</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">Expert guidance on layouts, materials, finishes, and project planning.</p>
+                    </div>
+
+                    <div class="bg-origami p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Luxury Home Additions</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">Expansions and additions designed to enhance your home's value and lifestyle—from primary suites to guest houses.</p>
+                    </div>
+
+                    <div class="bg-origami p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Project Management</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">Full oversight of timelines, budgets, trades, and quality from start to finish.</p>
+                    </div>
+
+                    <div class="bg-origami p-6 sm:p-8 md:p-10">
+                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">General Contracting</h4>
+                        <p class="mt-3 text-sm leading-6 text-urbane">Coordinated subcontractors, clear communication, and premium client experience.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-
-
-
-
-        <!-- Work / Portfolio -->
-        <section v-if="featuredPhotos.length > 0" id="work" class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+        <!-- Portfolio -->
+        <section id="projects" class="bg-graphite px-4 py-16 text-origami sm:px-5 sm:py-20 md:px-8 md:py-32">
             <div class="mx-auto max-w-7xl">
-                <div class="mb-16 flex items-end justify-between gap-8">
+                <div class="mb-9 grid gap-6 md:mb-12 md:grid-cols-[1fr_auto] md:items-end">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Our Work</p>
-                        <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Portfolio</h2>
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-champagne sm:text-[0.72rem] sm:tracking-[0.32em]">
+                            Portfolio
+                        </p>
+                        <h2 class="mt-4 font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] min-[390px]:text-5xl md:mt-5 md:text-7xl">
+                            Work that feels permanent.
+                        </h2>
                     </div>
-                </div>
-
-                <MasonryWall
-                    :items="featuredPhotos"
-                    :min-columns="2"
-                    :max-columns="3"
-                    :column-width="[200, 300]"
-                    :gap="6"
-                >
-                    <template #default="{ item: photo, index }">
-                        <div
-                            class="group relative cursor-pointer overflow-hidden bg-stone-soft"
-                            @click="openLightbox(index)"
-                        >
-                            <img
-                                :src="photo.url"
-                                :alt="photo.category_name ?? 'Project photo'"
-                                loading="lazy"
-                                class="h-auto w-full transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <div
-                                v-if="photo.category_name"
-                                class="absolute inset-x-0 bottom-0 bg-linear-to-t from-stone-950/70 to-transparent px-4 py-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                            >
-                                <span class="text-xs uppercase tracking-widest text-clay">{{ photo.category_name }}</span>
-                            </div>
-                        </div>
-                    </template>
-                </MasonryWall>
-
-                <div class="mt-12 flex flex-col items-center justify-center">
-                    <a
-                        href="/gallery"
-                        class="border border-ink px-8 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-ink transition hover:bg-ink hover:text-bone"
-                    >
-                        Browse All Projects
+                    <a href="#contact" class="w-fit border border-champagne/40 px-5 py-3 text-[0.68rem] font-black uppercase tracking-[0.2em] text-champagne transition hover:bg-champagne hover:text-graphite sm:px-6 sm:text-[0.72rem] sm:tracking-[0.24em]">
+                        Discuss a Project
                     </a>
                 </div>
-            </div>
-        </section>
 
-        <!-- Philosophy / CTA -->
-        <section class="bg-ink px-5 py-24 text-bone sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto max-w-5xl">
-                <div class="grid gap-12 lg:grid-cols-[1fr_auto]">
-                    <div>
-                        <blockquote class="font-serif text-4xl font-light leading-tight lg:text-5xl">
-                            "Quality craftsmanship, transparent communication, and disciplined project management — that's what sets Built By Arrow apart."
-                        </blockquote>
-                    </div>
-                    <div class="flex flex-col items-start justify-end gap-6 lg:items-end">
-                        <p class="max-w-xs text-sm font-light leading-relaxed text-bone/70">
-                            Every project begins with a phone call. Let's talk about your vision.
-                        </p>
-                        <a href="#contact" class="border border-bone px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] transition hover:bg-bone hover:text-ink">
-                            Start With a Phone Call
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Process -->
-        <section id="process" class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto max-w-7xl">
-                <div class="mb-16">
-                    <p class="text-xs font-semibold uppercase tracking-luxury text-clay">How We Work</p>
-                    <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Our Process</h2>
-                </div>
-
-                <div class="space-y-8 border-l border-black/10">
-                    <div class="pl-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">01 / Discovery</h3>
-                        <p class="mt-2 text-base font-light leading-relaxed text-ink/70">Understanding your vision, timeline, and budget constraints.</p>
-                    </div>
-                    <div class="border-t border-black/10 pl-8 pt-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">02 / Design & Planning</h3>
-                        <p class="mt-2 text-base font-light leading-relaxed text-ink/70">Detailed plans, clear expectations, and open communication every step.</p>
-                    </div>
-                    <div class="border-t border-black/10 pl-8 pt-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">03 / Construction</h3>
-                        <p class="mt-2 text-base font-light leading-relaxed text-ink/70">Expert subcontractors, daily coordination, and quality assurance.</p>
-                    </div>
-                    <div class="border-t border-black/10 pl-8 pt-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">04 / Completion</h3>
-                        <p class="mt-2 text-base font-light leading-relaxed text-ink/70">Final walkthrough, documentation, and our commitment to your satisfaction.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Operational Trust -->
-        <section class="bg-stone-soft px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto max-w-7xl">
-                <div class="mb-16">
-                    <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Trust & Clarity</p>
-                    <h2 class="mt-2 font-serif text-5xl font-medium leading-tight text-ink">Operational Transparency</h2>
-                </div>
-
-                <div class="grid gap-8 md:grid-cols-3">
-                    <div class="border border-black/10 p-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">Pre-Construction</h3>
-                        <p class="mt-4 text-sm leading-relaxed text-ink/70">Detailed scope, timeline, and budget review with no surprises.</p>
-                    </div>
-                    <div class="border border-black/10 p-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">During the Build</h3>
-                        <p class="mt-4 text-sm leading-relaxed text-ink/70">Weekly updates, transparent pricing, quality inspections at every phase.</p>
-                    </div>
-                    <div class="border border-black/10 p-8">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-ink">Communication</h3>
-                        <p class="mt-4 text-sm leading-relaxed text-ink/70">Direct access to the project lead, responsive to questions and concerns.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-         <!-- About -->
-        <section class="px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto max-w-5xl">
-                <div class="grid gap-16 md:gap-24 md:grid-cols-2 items-center">
-                    <!-- Image -->
-                    <div class="order-2 md:order-1">
-                        <div class="aspect-4/3 overflow-hidden bg-stone-soft">
-                            <img
-                                src="/imgs/owner.jpg"
-                                alt="Renny Cyr, Built By Arrow Construction"
-                                loading="lazy"
-                                class="h-full w-full object-cover"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Text -->
-                    <div class="order-1 md:order-2">
-                        <h2 class="font-serif text-5xl md:text-6xl font-light mb-8 text-ink">Renny Cyr</h2>
-
-                        <div class="space-y-6 text-base md:text-lg leading-relaxed text-ink/70">
-                            <p>
-                                Arrow Construction specializes in high-end residential work throughout the Park City and Deer Valley area. We focus on delivering quality, transparency, and attention to detail on every project.
+                <div class="grid gap-5 md:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+                    <article class="group relative min-h-[430px] overflow-hidden bg-iron shadow-luxury sm:min-h-[520px] lg:min-h-[560px]">
+                        <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1600&q=85" alt="Luxury construction interior" class="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/50 to-transparent" />
+                        <div class="absolute inset-x-4 bottom-4 border border-champagne/25 bg-graphite/60 p-5 backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-7">
+                            <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">
+                                Featured Projects
                             </p>
-                            <p>
-                                From initial consultation through final completion, we prioritize clear communication and professional craftsmanship. Our team handles everything with precision and care.
-                            </p>
+                            <h3 class="mt-3 font-display text-4xl font-semibold leading-none tracking-[-0.045em] sm:mt-4 sm:text-5xl">
+                                Crafting Timeless Spaces with Unmatched Quality
+                            </h3>
                         </div>
+                    </article>
 
-                        <div class="mt-12 space-y-4">
-                            <div>
-                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Call</div>
-                                <a href="tel:+14355550123" class="text-lg text-ink hover:text-clay transition-colors font-light">
-                                    (435) 555-0123
-                                </a>
-                            </div>
-                            <div>
-                                <div class="text-xs tracking-wide uppercase text-clay mb-1">Email</div>
-                                <a href="mailto:hello@builtbyarrow.com" class="text-lg text-ink hover:text-clay transition-colors font-light">
-                                    hello@builtbyarrow.com
-                                </a>
-                            </div>
-                        </div>
+                    <div class="grid gap-5 md:gap-6">
+                        <article class="border border-champagne/20 bg-urbane p-6 shadow-luxury sm:p-8 md:p-10">
+                            <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-champagne sm:text-[0.68rem] sm:tracking-[0.28em]">
+                                Residential
+                            </p>
+                            <h3 class="mt-12 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-16">
+                                Turn Your Space Into A Sanctuary
+                            </h3>
+                            <p class="mt-4 leading-7 text-origami/70 md:mt-5">
+                                From kitchens to bathrooms, we transform everyday spaces into personalized retreats with meticulous craftsmanship and attention to detail.
+                            </p>
+                        </article>
+
+                        <article class="border border-iron/10 bg-origami p-6 text-graphite shadow-luxury sm:p-8 md:p-10">
+                            <p class="text-[0.62rem] font-black uppercase tracking-[0.24em] text-urbane sm:text-[0.68rem] sm:tracking-[0.28em]">
+                                Custom Scope
+                            </p>
+                            <h3 class="mt-12 font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:mt-16">
+                                Explore our curated portfolio of distinguished projects.
+                            </h3>
+                            <p class="mt-4 leading-7 text-urbane md:mt-5">
+                                From bespoke home builds to transformative renovations, our portfolio showcases a commitment to craftsmanship, design excellence, and client satisfaction. Each project reflects our dedication to creating spaces that are not only beautiful but also enduring.
+                            </p>
+                        </article>
                     </div>
+                </div>
+
+                <!-- Portfolio images -->
+                <div v-if="featuredPhotos.length > 0" class="mt-10 grid gap-5 md:gap-6 lg:grid-cols-3">
+                    <img
+                        v-for="photo in featuredPhotos.slice(0, 6)"
+                        :key="photo.id"
+                        :src="photo.url"
+                        :alt="`${photo.category_name || 'Project'} photo`"
+                        class="h-[350px] w-full object-cover shadow-luxury sm:h-[420px] md:h-[500px]"
+                    />
+                </div>
+                <div v-else class="mt-10 grid gap-5 md:gap-6 lg:grid-cols-3">
+                    <div class="h-[350px] bg-iron sm:h-[420px] md:h-[500px]" />
+                    <div class="h-[350px] bg-iron sm:h-[420px] md:h-[500px]" />
+                    <div class="h-[350px] bg-iron sm:h-[420px] md:h-[500px]" />
                 </div>
             </div>
         </section>
-
 
         <!-- Contact -->
-        <section id="contact" class="bg-charcoal px-5 py-24 text-bone sm:px-8 lg:px-10 lg:py-32">
-            <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2">
-                <div>
+        <section id="contact" class="bg-origami px-4 py-16 sm:px-5 sm:py-20 md:px-8 md:py-32">
+            <div class="mx-auto max-w-7xl border border-iron/10 bg-jogging/45 p-6 shadow-soft sm:p-8 md:p-12 lg:p-16">
+                <div class="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-start">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-luxury text-clay">Get In Touch</p>
-                        <h2 class="mt-2 font-serif text-5xl font-medium leading-tight">Let's Build Something Remarkable</h2>
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">
+                            Arrow Construction
+                        </p>
+                        <h2 class="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.045em] text-graphite min-[390px]:text-5xl md:mt-5 md:text-7xl">
+                            Let's discuss your next project. Schedule a call and we'll be in touch.
+                        </h2>
                     </div>
-
-                    <div class="mt-12 space-y-8">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-bone/50">Phone</p>
-                            <p class="mt-3 text-lg font-light">
-                                <a href="tel:+14355550123" class="transition hover:text-clay">(435) 555-0123</a>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-bone/50">Email</p>
-                            <p class="mt-3 text-lg font-light">
-                                <a href="mailto:hello@builtbyarrow.com" class="transition hover:text-clay">hello@builtbyarrow.com</a>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-bone/50">Service Area</p>
-                            <p class="mt-3 text-lg font-light leading-relaxed">Park City, Deer Valley, Heber, and surrounding areas.</p>
-                        </div>
+                    <div>
+                        <p class="mb-5 text-[0.65rem] font-black uppercase tracking-[0.28em] text-urbane sm:text-[0.72rem] sm:tracking-[0.32em]">
+                            Plan a Call
+                        </p>
+                        <ContactForm />
                     </div>
                 </div>
-
-                <ContactForm :project-types="projectTypes" :dark="true" />
             </div>
         </section>
     </main>
-
-
-
-    <Lightbox v-model="lightboxOpen" :photos="featuredPhotos" :start-index="lightboxIndex" />
 </template>

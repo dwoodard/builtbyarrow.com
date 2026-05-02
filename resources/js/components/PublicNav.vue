@@ -1,75 +1,50 @@
 <script setup lang="ts">
-import { usePage } from '@inertiajs/vue3';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-import BrandLogo from './BrandLogo.vue';
+type NavLink = {
+    label: string;
+    href: string;
+};
 
-const isLoggedIn = computed(() => !!usePage().props.auth?.user);
+const navLinks: NavLink[] = [
+    { label: 'Services', href: '#services' },
+    { label: 'Portfolio', href: '#projects' },
+    { label: 'Contact', href: '#contact' },
+];
 
-const scrolled = ref(false);
-const mobileOpen = ref(false);
-
-function onScroll() {
-    scrolled.value = window.scrollY > 60;
-}
-
-function closeMobile() {
-    mobileOpen.value = false;
-}
-
-onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }));
-onUnmounted(() => window.removeEventListener('scroll', onScroll));
+const ctaHref = '#contact';
 </script>
 
 <template>
-    <nav
-        class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
-        :class="scrolled ? 'bg-stone-950 shadow-[0_2px_24px_rgba(0,0,0,0.2)]' : 'bg-transparent'"
-    >
-        <div class="mx-auto max-w-7xl px-6 lg:px-10">
-            <div class="flex h-20 items-center justify-between">
+    <nav class="sticky top-0 z-50 mx-auto flex max-w-7xl items-center justify-between border border-champagne/20 bg-graphite/45 px-3 py-3 shadow-luxury backdrop-blur-md sm:px-4 md:px-7 md:py-4">
+        <a href="#" class="flex min-w-0 items-center gap-3 sm:gap-4">
+            <span class="grid h-10 w-10 shrink-0 place-items-center border border-champagne/50 bg-origami/95 text-sm font-black tracking-[-0.04em] text-graphite shadow-soft sm:h-12 sm:w-12 sm:text-lg">AC</span>
+            <span class="min-w-0 leading-tight">
+                <span class="block font-display text-xl font-bold tracking-[0.04em] text-origami sm:text-2xl">Arrow</span>
+                <span class="block text-[0.55rem] font-bold uppercase tracking-luxury text-champagne sm:text-[0.65rem] sm:tracking-[0.34em]">Construction</span>
+            </span>
+        </a>
 
-                <!-- Logo -->
-                <a href="/#" class="group flex items-center gap-1">
-                    <BrandLogo size="sm" />
-                </a>
-
-                <!-- Desktop nav -->
-                <div class="hidden items-center gap-8 md:flex">
-                    <a v-if="isLoggedIn" href="/admin" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Admin</a>
-                    <a href="#work" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Work</a>
-                    <a href="#process" class="gold-link text-sm tracking-wide text-gray-200 transition-colors hover:text-amber-gold">Process</a>
-                    <a href="#contact"
-                        class="ml-2 border border-amber-gold px-5 py-2 text-sm tracking-widest uppercase text-amber-gold transition-all duration-300 hover:bg-amber-gold hover:text-white"
-                    >
-                        Call Us
-                   </a>
-                </div>
-
-                <!-- Hamburger -->
-                <button
-                    class="p-2 text-white md:hidden"
-                    aria-label="Toggle menu"
-                    @click="mobileOpen = !mobileOpen"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path v-if="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-                        <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Mobile menu -->
-            <div v-show="mobileOpen" class="border-t border-gray-700 bg-stone-950 py-4 md:hidden">
-                <a href="#work" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Work</a>
-                <a href="#process" class="block px-4 py-2 text-sm text-gray-300 hover:text-amber-gold" @click="closeMobile">Process</a>
-                <a
-                    href="#contact"
-                    class="mx-4 mt-3 block border border-amber-gold py-2 text-center text-sm tracking-widest uppercase text-amber-gold"
-                    @click="closeMobile"
-                >
-                    Call Us
-                </a>
-            </div>
+        <div class="hidden items-center gap-9 text-[0.72rem] font-bold uppercase tracking-[0.24em] text-origami/75 lg:flex">
+            <a
+                v-for="link in navLinks"
+                :key="link.href"
+                :href="link.href"
+                class="transition hover:text-champagne"
+            >
+                {{ link.label }}
+            </a>
         </div>
+
+        <a
+            :href="ctaHref"
+            class="hidden border border-champagne/55 bg-champagne px-5 py-3 text-[0.72rem] font-black uppercase tracking-[0.2em] text-graphite transition hover:bg-origami sm:inline-flex"
+        >
+            Consultation
+        </a>
+        <a
+            :href="ctaHref"
+            class="inline-flex border border-champagne/55 bg-champagne px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-graphite transition hover:bg-origami sm:hidden"
+        >
+            Call
+        </a>
     </nav>
 </template>

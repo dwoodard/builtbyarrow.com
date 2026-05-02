@@ -7,32 +7,18 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Animated gold underline for nav links */
-.gold-link {
-    position: relative;
+section {
+    scroll-margin-top: 6rem;
 }
 
-.gold-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--color-amber-gold);
-    transition: width 0.3s ease;
-}
-
-.gold-link:hover::after {
-    width: 100%;
-}
+ 
 
 /* Hero section — background image with gradient overlay. */
 .hero-bg {
     background-size: cover;
     background-position: center 30%;
 
-    
+
 }
 
 /* Fade-up entrance animation */
@@ -54,6 +40,16 @@ html {
 .delay-1 { animation-delay: 0.15s; }
 .delay-2 { animation-delay: 0.3s; }
 .delay-3 { animation-delay: 0.45s; }
+
+/* Hero image drift animation */
+@keyframes heroDrift {
+    from {
+        transform: scale(1.05) translate3d(-0.5%, -0.5%, 0);
+    }
+    to {
+        transform: scale(1.09) translate3d(0.75%, 0.75%, 0);
+    }
+}
 
 /* Section divider — gradient line through a brand color */
 .section-divider {
