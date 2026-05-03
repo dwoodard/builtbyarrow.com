@@ -45,7 +45,7 @@ useHeroCanvas(heroHeader, heroCanvas);
                         </p>
 
                         <h1 class="font-display text-[3.15rem] font-semibold leading-[0.86] tracking-[-0.055em] text-origami min-[390px]:text-[3.65rem] sm:text-7xl md:text-8xl lg:text-[8.5rem]">
-                            Let's build something meaningful.
+                            Build beyond the ordinary.
                         </h1>
 
                         <div class="mt-6 h-px max-w-xs bg-gradient-to-r from-champagne via-champagne/40 to-transparent sm:max-w-xl md:mt-8" />
