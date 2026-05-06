@@ -126,6 +126,7 @@ export function useHeroCanvas(heroHeader: Ref<HTMLElement | null>, heroCanvas: R
       window.addEventListener('pointermove', onPointerMove, { passive: true });
       resize();
 
+      let animationId: number;
       const clock = new THREE.Clock();
 
       const animate = () => {
@@ -147,14 +148,20 @@ export function useHeroCanvas(heroHeader: Ref<HTMLElement | null>, heroCanvas: R
         lines.rotation.x = pointerY * 0.25;
 
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
       };
 
       animate();
 
       onUnmounted(() => {
+        cancelAnimationFrame(animationId);
         window.removeEventListener('resize', resize);
         window.removeEventListener('pointermove', onPointerMove);
+        renderer.dispose();
+        geometry.dispose();
+        material.dispose();
+        lineGeometry.dispose();
+        lineMaterial.dispose();
       });
     } else if (canvas) {
       canvas.remove();
