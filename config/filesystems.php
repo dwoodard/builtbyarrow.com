@@ -15,6 +15,8 @@ return [
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
+    'media_disk' => env('MEDIA_DISK', 'public'),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
@@ -42,6 +44,38 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'spaces' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY'),
+            'secret' => env('DO_SPACES_SECRET'),
+            'region' => env('DO_SPACES_REGION', 'nyc3'),
+            'bucket' => env('DO_SPACES_BUCKET'),
+            'url' => env('DO_SPACES_URL'),
+            'endpoint' => env('DO_SPACES_ENDPOINT'),
+            'root' => ltrim(env('DO_SPACES_DIRECTORY', ''), '/'),
+            'use_path_style_endpoint' => false,
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // Same as spaces but uses the direct endpoint URL (no CDN) for admin panel
+        // previews — avoids CDN CORS caching issues with Filepond.
+        'spaces_direct' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY'),
+            'secret' => env('DO_SPACES_SECRET'),
+            'region' => env('DO_SPACES_REGION', 'nyc3'),
+            'bucket' => env('DO_SPACES_BUCKET'),
+            'url' => 'https://'.env('DO_SPACES_BUCKET').'.'.parse_url(env('DO_SPACES_ENDPOINT', 'https://sfo3.digitaloceanspaces.com'), PHP_URL_HOST),
+            'endpoint' => env('DO_SPACES_ENDPOINT'),
+            'root' => ltrim(env('DO_SPACES_DIRECTORY', ''), '/'),
+            'use_path_style_endpoint' => false,
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
