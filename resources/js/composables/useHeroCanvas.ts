@@ -86,14 +86,6 @@ export function useHeroCanvas(heroHeader: Ref<HTMLElement | null>, heroCanvas: R
         ...randomLine(),
         ...randomLine(),
         ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
-        ...randomLine(),
       ]);
       lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
       const lines = new THREE.LineSegments(lineGeometry, lineMaterial);

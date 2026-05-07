@@ -241,6 +241,12 @@ useHeroCanvas(heroHeader, heroCanvas);
                     <div class="h-[350px] bg-iron sm:h-[420px] md:h-[500px]" />
                     <div class="h-[350px] bg-iron sm:h-[420px] md:h-[500px]" />
                 </div>
+
+                <div class="mt-10 flex justify-center md:mt-16">
+                    <a href="/gallery" class="w-fit border border-champagne/40 px-5 py-3 text-[0.68rem] font-black uppercase tracking-[0.2em] text-champagne transition hover:bg-champagne hover:text-graphite sm:px-6 sm:text-[0.72rem] sm:tracking-[0.24em]">
+                        View Full Gallery
+                    </a>
+                </div>
             </div>
         </section>
 
