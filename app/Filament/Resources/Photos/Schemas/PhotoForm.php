@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\Photos\Schemas;
 
+use App\Models\Album;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class PhotoForm
 {
@@ -30,6 +32,21 @@ class PhotoForm
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload(),
+                Select::make('album_id')
+                    ->relationship('album', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->nullable()
+                    ->placeholder('No album')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        return Album::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Select::make('tags')
                     ->multiple()
                     ->relationship(titleAttribute: 'name')

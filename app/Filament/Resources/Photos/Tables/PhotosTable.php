@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Photos\Tables;
 
 use App\Filament\Resources\Photos\PhotoResource;
+use App\Models\Album;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Tag;
@@ -46,6 +47,11 @@ class PhotosTable
                                 ->color('gray')
                                 ->size(TextSize::Small)
                                 ->grow(false),
+                            TextColumn::make('album.name')
+                                ->badge()
+                                ->color('gray')
+                                ->size(TextSize::Small)
+                                ->grow(false),
                             IconColumn::make('is_featured')
                                 ->icon(Heroicon::OutlinedStar)
                                 ->color('warning')
@@ -65,6 +71,14 @@ class PhotosTable
             ->filters([
                 SelectFilter::make('category')
                     ->relationship('category', 'name'),
+                SelectFilter::make('album')
+                    ->relationship('album', 'name'),
+                TernaryFilter::make('album_assigned')
+                    ->label('Album assigned')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('album_id'),
+                        false: fn ($query) => $query->whereNull('album_id'),
+                    ),
                 SelectFilter::make('tags')
                     ->relationship('tags', 'name')
                     ->multiple(),
@@ -102,16 +116,43 @@ class PhotosTable
                             $records->each->update(['category_id' => $data['category_id']]);
                         })
                         ->deselectRecordsAfterCompletion(),
-                    BulkAction::make('updateTags')
-                        ->label('Set tags')
+                    BulkAction::make('updateAlbum')
+                        ->label('Set album')
+                        ->icon('heroicon-o-rectangle-group')
+                        ->schema([
+                            Select::make('album_id')
+                                ->label('Album')
+                                ->relationship('album', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->nullable()
+                                ->placeholder('No album')
+                                ->createOptionForm([
+                                    TextInput::make('name')
+                                        ->label('Album name')
+                                        ->required()
+                                        ->maxLength(255),
+                                ])
+                                ->createOptionUsing(function (array $data): int {
+                                    return Album::create([
+                                        'name' => $data['name'],
+                                        'slug' => Str::slug($data['name']),
+                                    ])->id;
+                                }),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $records->each->update(['album_id' => $data['album_id']]);
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('editTags')
+                        ->label('Edit tags')
                         ->icon('heroicon-o-tag')
                         ->schema([
-                            Select::make('tags')
-                                ->label('Tags')
+                            Select::make('add_tags')
+                                ->label('Add tags')
                                 ->options(Tag::pluck('name', 'id'))
                                 ->multiple()
                                 ->searchable()
-                                ->required()
                                 ->createOptionForm([
                                     TextInput::make('name')
                                         ->label('Tag name')
@@ -121,9 +162,27 @@ class PhotosTable
                                 ->createOptionUsing(function (array $data): int {
                                     return Tag::create(['name' => $data['name']])->id;
                                 }),
+                            Select::make('remove_tags')
+                                ->label('Remove tags')
+                                ->options(Tag::pluck('name', 'id'))
+                                ->multiple()
+                                ->searchable(),
                         ])
                         ->action(function (Collection $records, array $data): void {
-                            $records->each(fn (Photo $photo) => $photo->tags()->sync($data['tags'] ?? []));
+                            $records->each(function (Photo $photo) use ($data) {
+                                // Add tags without removing existing ones, gracefully handling duplicates
+                                if ($data['add_tags'] ?? false) {
+                                    $existingTagIds = $photo->tags()->pluck('id')->toArray();
+                                    $tagsToAdd = array_diff($data['add_tags'], $existingTagIds);
+                                    if (! empty($tagsToAdd)) {
+                                        $photo->tags()->attach($tagsToAdd);
+                                    }
+                                }
+                                // Remove specified tags
+                                if ($data['remove_tags'] ?? false) {
+                                    $photo->tags()->detach($data['remove_tags']);
+                                }
+                            });
                         })
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('updateIsFeatured')
