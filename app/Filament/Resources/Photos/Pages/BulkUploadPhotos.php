@@ -40,10 +40,6 @@ class BulkUploadPhotos extends Page
 
     public function form(Schema $schema): Schema
     {
-        $mediaDisk = config('filesystems.media_disk');
-        $root = ltrim(config("filesystems.disks.{$mediaDisk}.root", ''), '/');
-        $directory = $root ? "{$root}/photos" : 'photos';
-
         return $schema
             ->components([
                 FileUpload::make('paths')
@@ -53,8 +49,8 @@ class BulkUploadPhotos extends Page
                     ->maxFiles(200)
                     ->maxParallelUploads(10)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->directory($directory)
-                    ->disk($mediaDisk)
+                    ->directory('photos')
+                    ->disk(config('filesystems.media_disk'))
                     ->visibility('public')
                     ->preserveFilenames()
                     ->live()
