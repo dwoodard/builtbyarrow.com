@@ -40,6 +40,10 @@ class BulkUploadPhotos extends Page
 
     public function form(Schema $schema): Schema
     {
+        $mediaDisk = config('filesystems.media_disk');
+        $root = ltrim(config("filesystems.disks.{$mediaDisk}.root", ''), '/');
+        $directory = $root ? "{$root}/photos" : 'photos';
+
         return $schema
             ->components([
                 FileUpload::make('paths')
@@ -49,8 +53,8 @@ class BulkUploadPhotos extends Page
                     ->maxFiles(200)
                     ->maxParallelUploads(10)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->directory('photos')
-                    ->disk(config('filesystems.media_disk'))
+                    ->directory($directory)
+                    ->disk($mediaDisk)
                     ->visibility('public')
                     ->preserveFilenames()
                     ->live()
@@ -115,6 +119,8 @@ class BulkUploadPhotos extends Page
         }
 
         $disk = config('filesystems.media_disk');
+        $root = ltrim(config("filesystems.disks.{$disk}.root", ''), '/');
+        $directory = $root ? "{$root}/photos" : 'photos';
         $categoryId = $this->data['category_id'] ?? null;
         $albumId = $this->data['album_id'] ?? null;
         $tags = $this->data['tags'] ?? [];
@@ -123,13 +129,13 @@ class BulkUploadPhotos extends Page
 
         $newCount = 0;
 
-        DB::transaction(function () use ($state, $disk, $categoryId, $albumId, $tags, $isFeatured, $sortOrder, &$newCount): void {
+        DB::transaction(function () use ($state, $disk, $directory, $categoryId, $albumId, $tags, $isFeatured, $sortOrder, &$newCount): void {
             foreach ($state as $file) {
                 if (! ($file instanceof TemporaryUploadedFile)) {
                     continue;
                 }
 
-                $path = $file->store('photos', $disk);
+                $path = $file->store($directory, $disk);
 
                 $record = Photo::create([
                     'path' => $path,
