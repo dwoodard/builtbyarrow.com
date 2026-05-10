@@ -23,7 +23,7 @@ class AlbumResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
-    protected static UnitEnum|string|null $navigationGroup = 'Meta';
+    protected static string|UnitEnum|null $navigationGroup = 'Meta';
 
     protected static ?int $navigationSort = 1;
 

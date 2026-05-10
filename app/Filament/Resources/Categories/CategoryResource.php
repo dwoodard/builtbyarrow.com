@@ -23,7 +23,7 @@ class CategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
-    protected static UnitEnum|string|null $navigationGroup = 'Meta';
+    protected static string|UnitEnum|null $navigationGroup = 'Meta';
 
     protected static ?int $navigationSort = 2;
 
