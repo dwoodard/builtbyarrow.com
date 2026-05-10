@@ -75,9 +75,17 @@ class PhotosTable
                         Select::make('category_id')
                             ->label('Category')
                             ->options(function () {
+                                $noCategoryCount = Photo::whereNull('category_id')->count();
+                                $categories = Category::withCount('photos')
+                                    ->pluck('photos_count', 'id')
+                                    ->mapWithKeys(fn ($count, $id) => [
+                                        $id => Category::find($id)->name . " ($count)",
+                                    ])
+                                    ->toArray();
+
                                 return [
-                                    '0' => 'No category',
-                                    ...Category::pluck('name', 'id')->toArray(),
+                                    '0' => "No category ($noCategoryCount)",
+                                    ...$categories,
                                 ];
                             })
                             ->placeholder('All Categories')
@@ -112,9 +120,17 @@ class PhotosTable
                         Select::make('album_id')
                             ->label('Album')
                             ->options(function () {
+                                $noAlbumCount = Photo::whereNull('album_id')->count();
+                                $albums = Album::withCount('photos')
+                                    ->pluck('photos_count', 'id')
+                                    ->mapWithKeys(fn ($count, $id) => [
+                                        $id => Album::find($id)->name . " ($count)",
+                                    ])
+                                    ->toArray();
+
                                 return [
-                                    '0' => 'No album',
-                                    ...Album::pluck('name', 'id')->toArray(),
+                                    '0' => "No album ($noAlbumCount)",
+                                    ...$albums,
                                 ];
                             })
                             ->placeholder('All Albums')
@@ -149,9 +165,17 @@ class PhotosTable
                         Select::make('tags')
                             ->label('Tags')
                             ->options(function () {
+                                $noTagsCount = Photo::doesntHave('tags')->count();
+                                $tags = Tag::withCount('photos')
+                                    ->pluck('photos_count', 'id')
+                                    ->mapWithKeys(fn ($count, $id) => [
+                                        $id => Tag::find($id)->name . " ($count)",
+                                    ])
+                                    ->toArray();
+
                                 return [
-                                    '0' => 'No tags',
-                                    ...Tag::pluck('name', 'id')->toArray(),
+                                    '0' => "No tags ($noTagsCount)",
+                                    ...$tags,
                                 ];
                             })
                             ->placeholder('All tags')

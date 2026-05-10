@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories\Tables;
 
+use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -18,6 +19,10 @@ class CategoriesTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
+                TextColumn::make('photos_count')
+                    ->label('Photos')
+                    ->sortable()
+                    ->state(fn (Category $record): int => $record->photos()->count()),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
