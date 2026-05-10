@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\Albums\AlbumResource;
+use App\Filament\Resources\Tags\TagResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -39,6 +41,10 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(99),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            ->resources([
+                AlbumResource::class,
+                TagResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,

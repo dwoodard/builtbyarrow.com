@@ -126,31 +126,9 @@ function openLightbox(index: number) {
     </div>
 
     <!-- ══════════════════════════════════════════════
-        FILTERS (Category + Albums)
+        FILTERS (Albums + Category)
     ══════════════════════════════════════════════ -->
     <div class="sticky top-16 z-20 bg-white shadow-sm">
-        <!-- Category Filter -->
-        <div class="border-b border-stone-200 px-6">
-            <div class="mx-auto flex max-w-7xl gap-1 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <button
-                    class="shrink-0 px-5 py-2 text-xs tracking-widest uppercase transition-all duration-200"
-                    :class="activeCategory === null ? 'bg-stone-950 text-white' : 'text-stone-600 hover:text-stone-900'"
-                    @click="activeCategory = null"
-                >
-                    All
-                </button>
-                <button
-                    v-for="cat in categories"
-                    :key="cat.id"
-                    class="shrink-0 px-5 py-2 text-xs tracking-widest uppercase transition-all duration-200"
-                    :class="activeCategory === cat.id ? 'bg-stone-950 text-white' : 'text-stone-600 hover:text-stone-900'"
-                    @click="activeCategory = cat.id"
-                >
-                    {{ cat.name }}
-                </button>
-            </div>
-        </div>
-
         <!-- Album Filter -->
         <div v-if="albums.length > 0" class="border-b border-stone-200 px-6">
             <div class="mx-auto flex max-w-7xl gap-1 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -169,6 +147,28 @@ function openLightbox(index: number) {
                     @click="activeAlbum = album.id"
                 >
                     {{ album.name }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="border-b border-stone-200 px-6">
+            <div class="mx-auto flex max-w-7xl gap-1 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <button
+                    class="shrink-0 px-5 py-2 text-xs tracking-widest uppercase transition-all duration-200"
+                    :class="activeCategory === null ? 'bg-stone-950 text-white' : 'text-stone-600 hover:text-stone-900'"
+                    @click="activeCategory = null"
+                >
+                    All Categories
+                </button>
+                <button
+                    v-for="cat in categories"
+                    :key="cat.id"
+                    class="shrink-0 px-5 py-2 text-xs tracking-widest uppercase transition-all duration-200"
+                    :class="activeCategory === cat.id ? 'bg-stone-950 text-white' : 'text-stone-600 hover:text-stone-900'"
+                    @click="activeCategory = cat.id"
+                >
+                    {{ cat.name }}
                 </button>
             </div>
         </div>
