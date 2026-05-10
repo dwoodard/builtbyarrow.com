@@ -128,7 +128,7 @@ function openLightbox(photo: Photo) {
         <h1 class="font-display text-4xl font-semibold text-white md:text-5xl">Project Gallery</h1>
         <div class="mx-auto mt-6 h-px w-24 bg-linear-to-r from-transparent via-amber-gold to-transparent"></div>
         <p class="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-gray-400">
-            Browse all our projects — kitchens, bathrooms, basements, and more.
+            Browse all our projects — kitchens, bathrooms, outdoor spaces, and more. We’re always adding new photos, so check back often to see our latest work.
         </p>
     </div>
 
