@@ -21,9 +21,10 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -69,21 +70,129 @@ class PhotosTable
                 'xl' => 2,
             ])
             ->filters([
-                SelectFilter::make('category')
-                    ->relationship('category', 'name'),
-                SelectFilter::make('album')
-                    ->relationship('album', 'name'),
-                TernaryFilter::make('album_assigned')
-                    ->label('Album assigned')
-                    ->queries(
-                        true: fn ($query) => $query->whereNotNull('album_id'),
-                        false: fn ($query) => $query->whereNull('album_id'),
-                    ),
-                SelectFilter::make('tags')
-                    ->relationship('tags', 'name')
-                    ->multiple(),
+                Filter::make('category')
+                    ->form([
+                        Select::make('category_id')
+                            ->label('Category')
+                            ->options(function () {
+                                return [
+                                    '0' => 'No category',
+                                    ...Category::pluck('name', 'id')->toArray(),
+                                ];
+                            })
+                            ->placeholder('All Categories')
+                            ->native(false),
+                    ])
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! isset($data['category_id']) || $data['category_id'] === null) {
+                            return null;
+                        }
+
+                        if ($data['category_id'] === '0') {
+                            return 'No category';
+                        }
+
+                        $category = Category::find((int) $data['category_id']);
+
+                        return $category ? $category->name : null;
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (! isset($data['category_id']) || $data['category_id'] === null) {
+                            return $query;
+                        }
+
+                        if ($data['category_id'] === '0') {
+                            return $query->whereNull('category_id');
+                        }
+
+                        return $query->where('category_id', (int) $data['category_id']);
+                    }),
+                Filter::make('album')
+                    ->form([
+                        Select::make('album_id')
+                            ->label('Album')
+                            ->options(function () {
+                                return [
+                                    '0' => 'No album',
+                                    ...Album::pluck('name', 'id')->toArray(),
+                                ];
+                            })
+                            ->placeholder('All Albums')
+                            ->native(false),
+                    ])
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! isset($data['album_id']) || $data['album_id'] === null) {
+                            return null;
+                        }
+
+                        if ($data['album_id'] === '0') {
+                            return 'No album';
+                        }
+
+                        $album = Album::find((int) $data['album_id']);
+
+                        return $album ? $album->name : null;
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (! isset($data['album_id']) || $data['album_id'] === null) {
+                            return $query;
+                        }
+
+                        if ($data['album_id'] === '0') {
+                            return $query->whereNull('album_id');
+                        }
+
+                        return $query->where('album_id', (int) $data['album_id']);
+                    }),
+                Filter::make('tags')
+                    ->form([
+                        Select::make('tags')
+                            ->label('Tags')
+                            ->options(function () {
+                                return [
+                                    '0' => 'No tags',
+                                    ...Tag::pluck('name', 'id')->toArray(),
+                                ];
+                            })
+                            ->placeholder('All tags')
+                            ->native(false),
+                    ])
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! isset($data['tags']) || $data['tags'] === null) {
+                            return null;
+                        }
+
+                        if ($data['tags'] === '0') {
+                            return 'No tags';
+                        }
+
+                        $tag = Tag::find((int) $data['tags']);
+
+                        return $tag ? $tag->name : null;
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (! isset($data['tags']) || $data['tags'] === null) {
+                            return $query;
+                        }
+
+                        if ($data['tags'] === '0') {
+                            return $query->doesntHave('tags');
+                        }
+
+                        return $query->whereHas('tags', fn (Builder $q) => $q->where('tags.id', (int) $data['tags']));
+                    }),
                 TernaryFilter::make('is_featured')
-                    ->label('Featured'),
+                    ->placeholder('All photos')
+                    ->label('Featured')
+                    ->trueLabel('Featured only')
+                    ->falseLabel('Not featured')
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! isset($data['is_featured']) || $data['is_featured'] === null) {
+                            return null;
+                        }
+
+                        return $data['is_featured'] ? 'Featured' : 'Not featured';
+                    }),
             ])
             ->recordUrl(fn (Photo $record): string => PhotoResource::getUrl('edit', ['record' => $record]))
             ->recordActions([])
