@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['category_id', 'path', 'is_featured', 'sort_order'])]
+#[Fillable(['category_id', 'album_id', 'path', 'is_featured', 'sort_order'])]
 class Photo extends Model
 {
     /** @use HasFactory<PhotoFactory> */
@@ -39,6 +39,11 @@ class Photo extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function album(): BelongsTo
+    {
+        return $this->belongsTo(Album::class);
     }
 
     public function tags(): BelongsToMany

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Photos\Pages;
 
 use App\Filament\Resources\Photos\PhotoResource;
+use App\Models\Album;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Tag;
@@ -59,6 +60,11 @@ class BulkUploadPhotos extends Page
                     ->options(fn (): array => Category::orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
                     ->placeholder('No category'),
+                Select::make('album_id')
+                    ->label('Album')
+                    ->options(fn (): array => Album::orderBy('name')->pluck('name', 'id')->all())
+                    ->searchable()
+                    ->placeholder('No album'),
                 Select::make('tags')
                     ->label('Tags')
                     ->multiple()
@@ -86,13 +92,14 @@ class BulkUploadPhotos extends Page
 
         $disk = config('filesystems.media_disk');
         $categoryId = $this->data['category_id'] ?? null;
+        $albumId = $this->data['album_id'] ?? null;
         $tags = $this->data['tags'] ?? [];
         $isFeatured = $this->data['is_featured'] ?? false;
         $sortOrder = $this->data['sort_order'] ?? 0;
 
         $newCount = 0;
 
-        DB::transaction(function () use ($state, $disk, $categoryId, $tags, $isFeatured, $sortOrder, &$newCount): void {
+        DB::transaction(function () use ($state, $disk, $categoryId, $albumId, $tags, $isFeatured, $sortOrder, &$newCount): void {
             foreach ($state as $file) {
                 if (! ($file instanceof TemporaryUploadedFile)) {
                     continue;
@@ -103,6 +110,7 @@ class BulkUploadPhotos extends Page
                 $record = Photo::create([
                     'path' => $path,
                     'category_id' => $categoryId,
+                    'album_id' => $albumId,
                     'is_featured' => $isFeatured,
                     'sort_order' => $sortOrder,
                 ]);
