@@ -14,6 +14,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\Page;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class BulkUploadPhotos extends Page
@@ -59,12 +60,30 @@ class BulkUploadPhotos extends Page
                     ->label('Category')
                     ->options(fn (): array => Category::orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
-                    ->placeholder('No category'),
+                    ->placeholder('No category')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ])
+                    ->createOptionUsing(function (array $data): int {
+                        return Category::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Select::make('album_id')
                     ->label('Album')
                     ->options(fn (): array => Album::orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
-                    ->placeholder('No album'),
+                    ->placeholder('No album')
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ])
+                    ->createOptionUsing(function (array $data): int {
+                        return Album::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Select::make('tags')
                     ->label('Tags')
                     ->multiple()
@@ -74,7 +93,12 @@ class BulkUploadPhotos extends Page
                     ->createOptionForm([
                         TextInput::make('name')->required(),
                     ])
-                    ->createOptionUsing(fn (array $data): int => Tag::create($data)->getKey()),
+                    ->createOptionUsing(function (array $data): int {
+                        return Tag::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Toggle::make('is_featured'),
                 TextInput::make('sort_order')
                     ->numeric()

@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Photos\Schemas;
 
 use App\Models\Album;
+use App\Models\Category;
+use App\Models\Tag;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -31,7 +33,16 @@ class PhotoForm
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('name')->required(),
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        return Category::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Select::make('album_id')
                     ->relationship('album', 'name')
                     ->searchable()
@@ -54,7 +65,13 @@ class PhotoForm
                     ->preload()
                     ->createOptionForm([
                         TextInput::make('name')->required(),
-                    ]),
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        return Tag::create([
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                        ])->id;
+                    }),
                 Toggle::make('is_featured'),
                 TextInput::make('sort_order')
                     ->numeric()
