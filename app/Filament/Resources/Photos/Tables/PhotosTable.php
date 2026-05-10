@@ -194,6 +194,7 @@ class PhotosTable
                         return $data['is_featured'] ? 'Featured' : 'Not featured';
                     }),
             ])
+            ->persistFiltersInSession()
             ->recordUrl(fn (Photo $record): string => PhotoResource::getUrl('edit', ['record' => $record]))
             ->recordActions([])
             ->toolbarActions([
