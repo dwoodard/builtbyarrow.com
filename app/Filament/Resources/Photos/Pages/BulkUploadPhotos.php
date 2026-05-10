@@ -115,8 +115,7 @@ class BulkUploadPhotos extends Page
         }
 
         $disk = config('filesystems.media_disk');
-        $root = ltrim(config("filesystems.disks.{$disk}.root", ''), '/');
-        $directory = $root ? "{$root}/photos" : 'photos';
+        $directory = 'photos';
         $categoryId = $this->data['category_id'] ?? null;
         $albumId = $this->data['album_id'] ?? null;
         $tags = $this->data['tags'] ?? [];
