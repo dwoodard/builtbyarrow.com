@@ -12,15 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('photos', function (Blueprint $table) {
-            if (! Schema::hasColumn('photos', 'album_id')) {
-                $table->foreignId('album_id')->nullable()->after('category_id')->constrained('albums')->nullOnDelete();
-            }
-            if (! Schema::hasIndex('photos', 'photos_album_id_index')) {
-                $table->index('album_id');
-            }
-            if (! Schema::hasIndex('photos', 'photos_album_id_foreign')) {
-                $table->foreign('album_id')->references('id')->on('albums')->nullOnDelete();
-            }
+            $table->foreignId('album_id')->nullable()->after('category_id')->constrained('albums')->nullOnDelete();
         });
     }
 
