@@ -160,50 +160,48 @@ class PhotosTable
 
                         return $query->where('album_id', (int) $data['album_id']);
                     }),
-                Filter::make('tags')
+                Filter::make('tag')
                     ->form([
-                        Select::make('tags')
+                        Select::make('tag_id')
                             ->label('Tags')
                             ->options(function () {
                                 $noTagsCount = Photo::doesntHave('tags')->count();
                                 $tags = Tag::withCount('photos')
-                                    ->pluck('photos_count', 'id')
-                                    ->mapWithKeys(fn ($count, $id) => [
-                                        $id => Tag::find($id)->name . " ($count)",
+                                    ->orderBy('name')
+                                    ->get()
+                                    ->mapWithKeys(fn (Tag $tag) => [
+                                        (string) $tag->id => "{$tag->name} ({$tag->photos_count})",
                                     ])
                                     ->toArray();
 
-                                return [
-                                    '0' => "No tags ($noTagsCount)",
-                                    ...$tags,
-                                ];
+                                return ['0' => "No tags ($noTagsCount)"] + $tags;
                             })
                             ->placeholder('All tags')
                             ->native(false),
                     ])
                     ->indicateUsing(function (array $data): ?string {
-                        if (! isset($data['tags']) || $data['tags'] === null) {
+                        if (! isset($data['tag_id']) || $data['tag_id'] === null) {
                             return null;
                         }
 
-                        if ($data['tags'] === '0') {
+                        if ($data['tag_id'] === '0') {
                             return 'No tags';
                         }
 
-                        $tag = Tag::find((int) $data['tags']);
+                        $tag = Tag::find((int) $data['tag_id']);
 
                         return $tag ? $tag->name : null;
                     })
                     ->query(function (Builder $query, array $data): Builder {
-                        if (! isset($data['tags']) || $data['tags'] === null) {
+                        if (! isset($data['tag_id']) || $data['tag_id'] === null) {
                             return $query;
                         }
 
-                        if ($data['tags'] === '0') {
+                        if ($data['tag_id'] === '0') {
                             return $query->doesntHave('tags');
                         }
 
-                        return $query->whereHas('tags', fn (Builder $q) => $q->where('tags.id', (int) $data['tags']));
+                        return $query->whereHas('tags', fn (Builder $q) => $q->where('tags.id', (int) $data['tag_id']));
                     }),
                 TernaryFilter::make('is_featured')
                     ->placeholder('All photos')
