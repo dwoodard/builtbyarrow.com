@@ -134,35 +134,35 @@ useHeroCanvas(heroHeader, heroCanvas);
                     Our Services
                 </p>
 
-                <div class="mt-16 grid gap-4 overflow-hidden border border-iron/10 bg-iron/10 p-4 shadow-soft md:mt-20 md:grid-cols-3">
-                    <div class="bg-origami/50 p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Custom Home Construction</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">From foundation to final detail, we build homes designed for your life.</p>
+                <div class="mt-16 grid gap-8 md:mt-20 md:grid-cols-3 lg:gap-12">
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Custom Home Construction</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">From foundation to final detail, we build homes designed for your life.</p>
                     </div>
 
-                    <div class="bg-origami p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Residential Renovations</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">Kitchen, bath, and whole-home remodels with meticulous attention to detail.</p>
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Residential Renovations</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">Kitchen, bath, and whole-home remodels with meticulous attention to detail.</p>
                     </div>
 
-                    <div class="bg-origami p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Design Consultation</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">Expert guidance on layouts, materials, finishes, and project planning.</p>
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Design Consultation</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">Expert guidance on layouts, materials, finishes, and project planning.</p>
                     </div>
 
-                    <div class="bg-origami p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Luxury Home Additions</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">Expansions and additions designed to enhance your home's value and lifestyle—from primary suites to guest houses.</p>
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Luxury Home Additions</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">Expansions and additions designed to enhance your home's value and lifestyle—from primary suites to guest houses.</p>
                     </div>
 
-                    <div class="bg-origami p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Project Management</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">Full oversight of timelines, budgets, trades, and quality from start to finish.</p>
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">Project Management</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">Full oversight of timelines, budgets, trades, and quality from start to finish.</p>
                     </div>
 
-                    <div class="bg-origami p-6 sm:p-8 md:p-10">
-                        <h4 class="font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">General Contracting</h4>
-                        <p class="mt-3 text-sm leading-6 text-urbane">Coordinated subcontractors, clear communication, and premium client experience.</p>
+                    <div>
+                        <h4 class="border-b border-iron/20 pb-4 font-display text-2xl font-semibold tracking-[-0.04em] text-graphite">General Contracting</h4>
+                        <p class="mt-4 text-sm leading-6 text-urbane">Coordinated subcontractors, clear communication, and premium client experience.</p>
                     </div>
                 </div>
             </div>
