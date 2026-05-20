@@ -1,12 +1,13 @@
-import { onMounted, onUnmounted, Ref } from 'vue';
 import * as THREE from 'three';
+import type { Ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 
 export function useHeroCanvas(heroHeader: Ref<HTMLElement | null>, heroCanvas: Ref<HTMLCanvasElement | null>) {
   onMounted(() => {
     const canvas = heroCanvas.value;
     const header = heroHeader.value;
 
-    if (!canvas || !header) return;
+    if (!canvas || !header) { return; }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

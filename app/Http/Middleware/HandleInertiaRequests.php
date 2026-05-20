@@ -43,8 +43,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
-	    'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
-	    'flash' => [
+            'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
+            'flash' => [
                 'success' => $request->session()->get('success'),
             ],
         ];

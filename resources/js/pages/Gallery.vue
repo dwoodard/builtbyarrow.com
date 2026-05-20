@@ -52,6 +52,7 @@ const filteredPhotos = computed(() =>
         const categoryMatch = activeCategory.value === null || p.category_id === activeCategory.value;
         const albumMatch = activeAlbum.value === null || p.album_id === activeAlbum.value;
         const tagMatch = activeTag.value === null || p.tag_ids.includes(activeTag.value);
+
         return categoryMatch && albumMatch && tagMatch;
     }),
 );
@@ -74,12 +75,15 @@ const groupedPhotos = computed(() => {
         if (photo.album_id === null) {
             return; // Skip photos without an album
         }
+
         if (!groups[photo.album_id]) {
             const album = props.albums.find((a) => a.id === photo.album_id);
+
             if (album) {
                 groups[photo.album_id] = { album, photos: [] };
             }
         }
+
         if (groups[photo.album_id]) {
             groups[photo.album_id].photos.push(photo);
         }
@@ -95,6 +99,7 @@ const availableTags = computed(() => {
             tagIds.add(tagId);
         });
     });
+
     return Array.from(tagIds)
         .map((id) => props.tags.find((t) => t.id === id))
         .filter((tag): tag is Tag => tag !== undefined);
@@ -113,6 +118,7 @@ function openLightbox(photo: Photo) {
         // Filtered view: find index in filtered array
         lightboxIndex.value = filteredPhotos.value.findIndex((p) => p.id === photo.id);
     }
+
     lightboxOpen.value = true;
 }
 </script>

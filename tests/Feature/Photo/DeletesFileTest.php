@@ -3,7 +3,7 @@
 use App\Models\Photo;
 use Illuminate\Support\Facades\Storage;
 
-test('deleting photo deletes file from storage', function () {
+test('deleting photo deletes file from storage', function (): void {
     Storage::fake(config('filesystems.media_disk'));
 
     $photo = Photo::factory()->create(['path' => 'photos/test-image.jpg']);
@@ -12,6 +12,6 @@ test('deleting photo deletes file from storage', function () {
     expect(Storage::disk(config('filesystems.media_disk'))->exists($photo->path))->toBeTrue();
 
     $photo->delete();
- 
+
     expect(Storage::disk(config('filesystems.media_disk'))->exists($photo->path))->toBeFalse();
 });

@@ -79,7 +79,7 @@ class PhotosTable
                                 $categories = Category::withCount('photos')
                                     ->pluck('photos_count', 'id')
                                     ->mapWithKeys(fn ($count, $id) => [
-                                        $id => Category::find($id)->name . " ($count)",
+                                        $id => Category::find($id)->name." ($count)",
                                     ])
                                     ->toArray();
 
@@ -124,7 +124,7 @@ class PhotosTable
                                 $albums = Album::withCount('photos')
                                     ->pluck('photos_count', 'id')
                                     ->mapWithKeys(fn ($count, $id) => [
-                                        $id => Album::find($id)->name . " ($count)",
+                                        $id => Album::find($id)->name." ($count)",
                                     ])
                                     ->toArray();
 
@@ -301,7 +301,7 @@ class PhotosTable
                                 ->searchable(),
                         ])
                         ->action(function (Collection $records, array $data): void {
-                            $records->each(function (Photo $photo) use ($data) {
+                            $records->each(function (Photo $photo) use ($data): void {
                                 // Add tags without removing existing ones, gracefully handling duplicates
                                 if ($data['add_tags'] ?? false) {
                                     $existingTagIds = $photo->tags()->pluck('id')->toArray();

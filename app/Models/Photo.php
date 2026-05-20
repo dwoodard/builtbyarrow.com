@@ -29,7 +29,7 @@ class Photo extends Model
     {
         parent::boot();
 
-        static::deleting(function (self $photo) {
+        static::deleting(function (self $photo): void {
             if ($photo->path) {
                 Storage::disk(config('filesystems.media_disk'))->delete($photo->path);
             }

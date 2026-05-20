@@ -10,8 +10,7 @@ interface FeaturedPhoto {
     category_name: string | null;
 }
 
-const props = defineProps<{
-    projectTypes: string[];
+defineProps<{
     featuredPhotos: FeaturedPhoto[];
 }>();
 
